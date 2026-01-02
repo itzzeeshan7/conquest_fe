@@ -1,0 +1,9 @@
+<div class="news-b" (click)="goToNews()">
+  <div class="news-b__img">
+    <a>
+      <img data-src="{{ image }}" alt="" uiImageLoader [onErrorSrc]="defaultImg" />
+    </a>
+  </div>
+  <p class="news-b__title" [innerHTML]="title"></p>
+  <p class="news-b__description" [innerHTML]="composeDescription(description)"></p>
+</div>

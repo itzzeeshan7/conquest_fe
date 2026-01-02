@@ -1,0 +1,26 @@
+<a class="apartament" (click)="goToApartment(apartament)" [routerLink]="">
+  <div class="content">
+    <a>
+      <img class="content--img" [src]="apartament.image" uiImageLoader [onErrorSrc]="defaultImg" />
+    </a>
+    <div class="content__info">
+      <div class="content__info__left">
+        <h6>${{ util.convertToLocaleString(apartament.listing_price) }}</h6>
+        <p class="text-margin">{{ apartament.address_with_unit }}</p>
+        <p>{{ apartament.place_name }}</p>
+        <span *ngIf="apartament.region">,{{ apartament.region }}</span>
+      </div>
+      <div class="content__info__right">
+        <div *ngIf="apartament.beds != 0">{{ apartament.beds }}<span>Beds</span></div>
+        <div *ngIf="apartament.beds == 0"><span>Studio</span></div>
+        <div *ngIf="apartament.num_baths">{{ apartament.num_baths }}<span>Baths</span></div>
+        <div *ngIf="apartament.sqft">{{ util.convertToLocaleString(apartament.sqft) }}<span>Sq.Ft</span></div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="apartament--buttons">
+    <div (click)="goToApartment(apartament.id)">Contact</div>
+    <div (click)="goToApartment(apartament.id)">Share</div>
+    <div (click)="removeApartmentFromList(apartament)">Remove</div>
+  </div> -->
+</a>

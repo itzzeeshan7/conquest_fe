@@ -1,0 +1,44 @@
+<div class="row d-flex external-apis">
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Name</th>
+        <th scope="col">URL</th>
+        <th scope="col">Query String</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let api of openDataApis">
+        <td scope="row">
+          <span>{{ api.id }}</span>
+        </td>
+        <td>
+          <span>{{ api.name }}</span>
+        </td>
+        <td>
+          <span>{{ api.url }}</span>
+        </td>
+        <td>
+          <div class="input-group" *ngIf="api.edit">
+            <input type="text" class="form-control" [(ngModel)]="api.queryString" />
+          </div>
+          <span *ngIf="!api.edit">{{ api.queryString }}</span>
+        </td>
+        <td>
+          <button *ngIf="!api.edit" class="btn btn-icon btn-outline-dark" (click)="toggleEdit(api)">
+            <i class="fas fa-user-edit"></i>
+          </button>
+          <button *ngIf="api.edit" class="btn btn-icon btn-outline-dark" (click)="save(api)">
+            <i class="fas fa-save"></i>
+          </button>
+          <button *ngIf="api.edit" class="btn btn-icon btn-outline-dark" (click)="toggleEdit(api)">
+            <i class="fas fa-times"></i>
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<app-footer></app-footer>

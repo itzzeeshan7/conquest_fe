@@ -1,0 +1,163 @@
+@import "../../../../theme/theme-variables";
+@import "bootstrap/scss/mixins";
+
+.table-property-history {
+  thead {
+    th {
+      vertical-align: top;
+      border-right: none;
+      border-bottom: none;
+
+      small {
+        color: #505050;
+      }
+    }
+  }
+
+  tbody {
+    td,
+    tr {
+      vertical-align: middle;
+    }
+
+    .login-no-listings {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: center;
+      align-content: stretch;
+      font-size: 1.3em;
+
+      .login {
+        .box-span {
+          border: 1px solid black;
+          padding: 10px;
+          border-radius: 9px;
+          box-shadow: 8px 5px 8px;
+          width: 85%;
+          margin-right: 30px;
+        }
+
+        .span-a {
+          color: $app-gray;
+          text-decoration: underline;
+
+          &:hover {
+            color: $app-black;
+            cursor: pointer;
+          }
+
+          &.active {
+            font-weight: bold;
+          }
+        }
+      }
+
+      .no-listings {
+      }
+    }
+  }
+
+  &__img {
+    max-width: 120px;
+    width: 120px;
+  }
+
+  &__img-h {
+    width: 120px;
+  }
+}
+
+.login-no-listings-mobile {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  justify-content: center;
+  align-items: center;
+  align-content: stretch;
+  font-size: 1.3em;
+
+  .login {
+    .box-span {
+      border: 1px solid black;
+      padding: 10px;
+      border-radius: 9px;
+      box-shadow: 8px 5px 8px;
+      width: 85%;
+      margin-right: 30px;
+    }
+
+    .span-a {
+      color: $app-gray;
+      text-decoration: underline;
+
+      &:hover {
+        color: $app-black;
+        cursor: pointer;
+      }
+
+      &.active {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+.table-property-history.table-bordered th,
+.table-property-history.table-bordered td {
+  border-right: none;
+  border-left: none;
+}
+
+.table {
+  overflow-x: scroll;
+  height: 400px;
+  overflow-y: auto;
+}
+
+.units-list {
+  max-height: 350px;
+  overflow-y: auto;
+
+  .listing {
+    display: flex;
+    flex-direction: row;
+    border-top: 1px solid $app-gray;
+    padding: 7px 0px;
+
+    a > img {
+      width: 72px;
+      height: 72px;
+      display: block;
+    }
+
+    .listing-content {
+      padding: 5px 0px 0px 15px;
+
+      a {
+        font-size: 14px;
+      }
+
+      .pricing-container {
+        .price {
+          font-weight: 600;
+          font-size: 14px;
+          margin-left: 10px;
+        }
+      }
+
+      .details-container {
+        margin-top: 4px;
+        display: flex;
+        font-size: 14px;
+        line-height: 16px;
+
+        span {
+          font-size: 14px;
+          line-height: 16px;
+        }
+      }
+    }
+  }
+}

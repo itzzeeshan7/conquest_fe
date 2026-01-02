@@ -1,0 +1,99 @@
+@import "../../../theme/theme-variables";
+@import "bootstrap/scss/mixins";
+
+:host(.header-nav--dark) {
+  .header-nav {
+    & > ul {
+      a {
+        color: $white;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .navbar-toggler-icon {
+    span {
+      background: $white;
+    }
+  }
+}
+
+.header-nav {
+  &__close {
+    font-size: 1.4em;
+    color: $white;
+  }
+
+  @include media-breakpoint-down(md) {
+    display: block;
+    padding: 20px;
+  }
+
+  & > ul {
+    padding: 0;
+    display: flex;
+    list-style: none;
+
+    @include media-breakpoint-down(md) {
+      display: block;
+      padding-top: 40px;
+    }
+
+    li {
+      list-style: none;
+      padding: 0 10px;
+
+      @include media-breakpoint-down(md) {
+        padding: 25px 0;
+        text-align: center;
+      }
+    }
+
+    a {
+      text-transform: uppercase;
+      color: $app-gray;
+
+      &:hover {
+        color: $app-black;
+        text-decoration: underline;
+        cursor: pointer;
+      }
+
+      &.active {
+        font-weight: bold;
+      }
+    }
+  }
+
+  @include media-breakpoint-down(md) {
+    position: fixed;
+    width: 100%;
+    background: $black;
+    top: 0;
+    left: 0;
+    z-index: 101;
+    height: 100%;
+  }
+}
+
+.navbar-toggler-icon {
+  span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: $black;
+    margin: 8px 0;
+
+    &:first-child {
+      margin-top: 0;
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+.navbar-toggler {
+  padding: 0;
+}

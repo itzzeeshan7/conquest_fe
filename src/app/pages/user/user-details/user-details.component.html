@@ -1,0 +1,113 @@
+<div class="row justify-content-md-center user-info">
+  <div class="col col-lg-6 col-xs-12">
+    <div class="card-body">
+      <h4 class="card-title text-center">
+        <i class="far fa-3x fa-user-circle text-muted"></i>
+      </h4>
+      <form (ngSubmit)="updateUserInfo()" [formGroup]="registerForm" novalidate *ngIf="userInfo">
+        <div class="alert alert-danger" *ngIf="error" translate>{{ error?.message?.join(',') }}</div>
+        <div class="form-group">
+          <label class="d-block">
+            <span translate>Full Name</span>
+            <input type="text" class="form-control" formControlName="name" [placeholder]="'Full Name' | translate" />
+            <app-error-message [control]="registerForm.get('name')"></app-error-message>
+          </label>
+          <label class="d-block">
+            <span translate>Email</span>
+            <input
+              type="text"
+              class="form-control"
+              formControlName="email"
+              [placeholder]="'Email' | translate"
+              readonly
+            />
+            <app-error-message [control]="registerForm.get('email')"></app-error-message>
+          </label>
+          <label class="d-block">
+            <span translate>Phone</span>
+            <input
+              class="form-control"
+              formControlName="phone"
+              name="phone"
+              type="text"
+              autocomplete="doNotAutoComplete"
+              [placeholder]="'Phone' | translate"
+            />
+            <app-error-message [control]="registerForm.get('phone')"></app-error-message>
+          </label>
+          <label class="d-block">
+            <span translate>Password</span>
+            <input
+              type="password"
+              class="form-control"
+              name="new-password"
+              autocomplete="new-password"
+              formControlName="password"
+              [placeholder]="'Password' | translate"
+              required
+            />
+            <small>{{ passwordMessage }}</small>
+            <!-- <app-error-message [control]="registerForm.get('password')"></app-error-message> -->
+          </label>
+          <label class="d-block" for="notification">
+            <input formControlName="receiveNotification" type="checkbox" id="notification" />
+            <span translate>Receive Notification for updates</span>
+          </label>
+        </div>
+        <button class="btn btn-primary w-100" type="submit" [disabled]="registerForm.invalid || isLoading">
+          <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+          <span translate>Update My Account</span>
+        </button>
+      </form>
+      <br />
+      <br />
+      <button class="btn btn-primary" (click)="accessChangePassword()" *ngIf="userInfo">Change Password</button>
+      <form (ngSubmit)="changePassword()" [formGroup]="changePasswordForm" novalidate *ngIf="!userInfo">
+        <div class="alert alert-danger" [hidden]="!errorChangePassword" translate>{{ error?.message?.join(',') }}</div>
+        <div class="form-group">
+          <label class="d-block">
+            <span translate>Old Password</span>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="oldPassword"
+              [placeholder]="'Password' | translate"
+              required
+            />
+            <app-error-message [control]="changePasswordForm.get('oldPassword')"></app-error-message>
+          </label>
+          <label class="d-block">
+            <span translate>New Password</span>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="password"
+              [placeholder]="'Password' | translate"
+              required
+            />
+            <app-error-message [control]="changePasswordForm.get('password')"></app-error-message>
+          </label>
+          <label class="d-block">
+            <span translate>Confirm password</span>
+            <input
+              type="password"
+              class="form-control"
+              formControlName="passwordConfirm"
+              [placeholder]="'Confirm password' | translate"
+              required
+            />
+            <app-error-message [control]="changePasswordForm.get('passwordConfirm')"></app-error-message>
+          </label>
+        </div>
+        <button class="btn btn-primary w-100" type="submit" [disabled]="changePasswordForm.invalid">
+          <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+          <span translate>Change Password</span>
+        </button>
+      </form>
+      <br />
+      <br />
+      <button class="btn btn-primary" (click)="accessUserInfo()" *ngIf="!userInfo">Update My Account</button>
+    </div>
+  </div>
+</div>
+<app-footer></app-footer>

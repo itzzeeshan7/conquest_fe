@@ -1,0 +1,90 @@
+.page-title-b {
+  &__name {
+    font-size: 1.5em;
+    line-height: 29px;
+    margin-bottom: 12px;
+    color: $app-dark;
+  }
+
+  &__cross-str {
+    display: inline-block;
+    font-size: 0.875em;
+    line-height: 29px;
+    color: $app-gray;
+    margin-bottom: 6px;
+    border-bottom: 1px solid #cbcbcb;
+  }
+
+  &__disrtict {
+    color: $app-gray;
+    font-size: 0.875em;
+  }
+}
+
+.page-btns {
+  margin: 0 -12px;
+  .btn {
+    margin: 0 6px;
+  }
+}
+
+.general-facts {
+  margin-bottom: 30px;
+  &__top {
+    border-top: 1px solid #bababa;
+    border-left: 1px solid #bababa;
+    border-right: 1px solid #bababa;
+    display: flex;
+    flex: 1 1 0;
+    text-align: center;
+    align-items: center;
+    min-height: 52px;
+  }
+
+  &__bottom {
+    background: $black;
+    color: $white;
+    text-align: center;
+    padding: 13px 5px;
+  }
+
+  &__item {
+    font-size: 1em;
+    color: $black;
+    flex-basis: 100%;
+    position: relative;
+
+    &:last-child {
+      &:after {
+        display: none;
+      }
+    }
+
+    &:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 0.5px;
+      height: 15px;
+      background: $black;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+    }
+  }
+}
+
+.page-title {
+  font-size: 1.5em;
+  line-height: 1.8125em;
+  color: $black;
+  margin-bottom: 20px;
+}
+
+.listing-details {
+  font-size: 1.5em;
+  line-height: 1.8125em;
+  color: $black;
+  margin-bottom: 10px;
+}

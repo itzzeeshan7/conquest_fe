@@ -1,0 +1,46 @@
+<section>
+  <div class="container full-h">
+    <div class="row">
+      <div class="col-12">
+        <div class="banner-outer">
+          <img src="../../../assets/img/news1.jpg" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-lg-6 d-block">
+        <h1>NEWS</h1>
+        <div class="about-section-b">
+          <p>
+            Conquest’s team has a proven track record, with redevelopment projects in excess of 300,000 square feet.
+            Whether in a management or an advisory role, conquest has the skills and experience necessary to navigate
+            the complexities of today’s development projects.<br />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="about-section">
+  <div class="container">
+    <div class="row" *ngFor="let item of news; let index = index">
+      <div class="col-xs-12 col-lg-6" [ngClass]="{ 'offset-lg-6': 1 === index % 2 }">
+        <div class="img">
+          <img data-src="{{ item.picture }}" uiImageLoader [onErrorSrc]="defaultImg" />
+        </div>
+        <div class="listing">
+          <h5 [innerHTML]="item.title"></h5>
+          <div [innerHTML]="item.text"></div>
+          <div *ngIf="item.descriptions">
+            <div style="margin-bottom: 10px" *ngFor="let desc of item.descriptions" [innerHTML]="desc"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

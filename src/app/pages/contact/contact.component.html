@@ -1,0 +1,97 @@
+<section>
+  <div class="container full-h">
+    <div class="row">
+      <div class="col-12">
+        <div class="banner-outer">
+          <div class="map">
+            <div class="map__container">
+              <google-map
+                #AgmMap
+                [options]="{ styles: mapStyles, scrollwheel: false }"
+                [center]="{ lat: lat, lng: lng }"
+                [zoom]="18"
+                width="100%"
+                height="100%"
+              >
+                <map-marker [position]="{ lat: lat, lng: lng }" [options]="{ icon: markerIcon }">
+                  <map-info-window>
+                    <h5>Conquest Advisors LTD, New York</h5>
+                  </map-info-window>
+                </map-marker>
+              </google-map>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-10 offset-lg-1 col-lg-6 d-block">
+        <h1>VISIT OUR OFFICE</h1>
+        <div class="about-section-b">
+          <p>Address: 15 Division Street, 5th Floor, NYC 10002</p>
+          <p>Phone:<a href="tel:+1-212-777-9690"> (212) 777-9690 </a> Fax: (212) 658-9445</p>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-10 offset-lg-1 col-lg-6 d-block">
+        <h5>WRITE US</h5>
+        <div class="about-section-b">
+          <form (ngSubmit)="send()" [formGroup]="contactForm" novalidate *ngIf="!messageSend">
+            <div class="form-group">
+              <label class="d-block">
+                <input type="text" class="form-control" formControlName="name" [placeholder]="'Name' | translate" />
+                <span hidden translate>Name</span>
+                <app-error-message [control]="contactForm.get('name')"></app-error-message>
+              </label>
+              <label class="d-block">
+                <input type="email" class="form-control" formControlName="email" [placeholder]="'Email' | translate" />
+                <span hidden translate>Email</span>
+                <app-error-message [control]="contactForm.get('email')"></app-error-message>
+              </label>
+              <label class="d-block">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="subject"
+                  [placeholder]="'Subject' | translate"
+                />
+                <span hidden translate>Subject</span>
+                <app-error-message [control]="contactForm.get('subject')"></app-error-message>
+              </label>
+              <label class="d-block">
+                <textarea
+                  class="form-control"
+                  formControlName="message"
+                  [placeholder]="'Message' | translate"
+                ></textarea>
+                <span hidden translate>Message</span>
+                <app-error-message [control]="contactForm.get('message')"></app-error-message>
+              </label>
+            </div>
+            <div class="form-check" (click)="notRobot()" *ngIf="!showSend">
+              <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+              <label class="form-check-label" for="flexCheckDefault"> I'm not a robot! </label>
+            </div>
+            <button
+              class="btn btn-primary"
+              *ngIf="showSend"
+              type="submit"
+              [disabled]="contactForm.invalid || isLoading"
+            >
+              <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+              <span translate>Send</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

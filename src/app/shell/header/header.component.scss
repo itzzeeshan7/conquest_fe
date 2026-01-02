@@ -1,0 +1,11 @@
+@import "../../../theme/theme-variables";
+@import "bootstrap/scss/mixins";
+
+.header {
+  padding-top: 30px;
+
+  @include media-breakpoint-down(md) {
+    padding-top: 40px;
+    margin-bottom: 20px;
+  }
+}

@@ -1,0 +1,76 @@
+<div class="map">
+  <div class="row">
+    <div class="col-12 col-lg-4 col-xl-4 col-md-4">
+      <div class="map__places">
+        <div class="map__places-item d-flex align-items-center justify-content-between" *ngFor="let place of places">
+          <div class="map__places-item__lft">
+            <p class="map__places-item__name">{{ place.name?.toTitleCase() }}</p>
+            <p class="map__places-item__address">{{ place.type }}</p>
+            <p class="map__places-item__address">{{ place.address }}</p>
+            <p class="map__places-item__info">{{ place.info }}</p>
+            <p class="map__places-item__notes" *ngIf="place.lines">Lines: {{ place.lines }}</p>
+            <p class="map__places-item__notes" *ngIf="place.notes">
+              Notes: {{ place.notes }}
+              <span *ngIf="place.markerType === 'polyline'"
+                >Color: <i class="fas fa-dot-circle" [ngStyle]="{ color: place.strokeColor }"></i
+              ></span>
+            </p>
+          </div>
+          <div class="map__places-item__rght" *ngIf="place.distance">
+            <span>{{ place.distance | number }} miles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-lg-8 col-xl-8 col-md-8">
+      <div class="map__container">
+        <google-map
+          [options]="{ styles: mapStyles, scrollwheel: false }"
+          [center]="{ lat: location.latitude, lng: location.longitude }"
+          [zoom]="12"
+          height="500px"
+          width="100%"
+        >
+          <map-marker
+            [position]="{ lat: location.latitude, lng: location.longitude }"
+            [options]="{ icon: mainMarkerIcon }"
+          >
+          </map-marker>
+          <ng-container *ngIf="markerType === MarkerTypeEnum.marker">
+            <map-marker
+              *ngFor="let marker of markers"
+              [position]="{ lat: marker.lat, lng: marker.lng }"
+              [options]="{ icon: markerIcon }"
+            >
+              <map-info-window>
+                <div class="map__marker-window">
+                  <div class="map__places-item d-flex align-items-center justify-content-between">
+                    <div class="map__places-item__lft">
+                      <p class="map__places-item__name">{{ marker.place.name?.toTitleCase() }}</p>
+                      <p class="map__places-item__address">{{ marker.place.type }}</p>
+                      <p class="map__places-item__address">{{ marker.place.address }}</p>
+                      <p class="map__places-item__info">{{ marker.place.info }}</p>
+                      <p class="map__places-item__notes" *ngIf="marker.place.lines">Lines: {{ marker.place.lines }}</p>
+                      <p class="map__places-item__notes" *ngIf="marker.place.notes">Notes: {{ marker.place.notes }}</p>
+                    </div>
+                    <div class="map__places-item__rght">
+                      <span>{{ marker.place.distance | number }} miles</span>
+                    </div>
+                  </div>
+                </div>
+              </map-info-window>
+            </map-marker>
+          </ng-container>
+          <ng-container *ngIf="type === MarkerTypeEnum.polyline">
+            <map-polyline
+              *ngFor="let polyline of polylineMarkers"
+              [options]="{ strokeWeight: 3, strokeColor: polyline.strokeColor }"
+              [path]="polyline.coordinates"
+            >
+            </map-polyline>
+          </ng-container>
+        </google-map>
+      </div>
+    </div>
+  </div>
+</div>

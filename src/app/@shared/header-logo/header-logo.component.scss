@@ -1,0 +1,17 @@
+@import "../../../theme/theme-variables";
+
+.header-logo {
+  max-width: 311px;
+  float: right;
+
+  img {
+    width: 100%;
+    height: auto;
+  }
+}
+
+@media #{$mq-xxlarge} {
+  .header-logo {
+    max-width: 450px;
+  }
+}

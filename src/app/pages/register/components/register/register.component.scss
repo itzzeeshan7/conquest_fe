@@ -1,0 +1,101 @@
+@import "src/theme/theme-variables";
+@import "../../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
+// Bootstrap 5 compatibility - restore card and form styling
+.card-body {
+  flex: 1 1 auto;
+  padding: 1rem;
+}
+
+.card-title {
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.text-muted {
+  color: #6c757d !important;
+}
+
+.login-container {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.login-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 100%;
+}
+
+.ng-invalid.ng-touched:not(form) {
+  border-left: 4px solid var(--bs-danger, #dc3545);
+}
+
+@include media-breakpoint-down(sm) {
+  .container {
+    width: 100%;
+  }
+}
+
+.legal {
+  padding: 10px 0 15px 0;
+}
+
+.btn-primary.disabled,
+.btn-primary:disabled {
+  color: #fff;
+  background-color: rgba(27, 24, 28, 0.3);
+  border-color: $black;
+}
+
+.btn-primary {
+  color: #fff;
+  background-color: $black;
+  border-color: $black;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2em $blackRgb3 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: $black;
+  border-color: $black;
+}
+
+.form-control:focus {
+  box-shadow: 0 0 0 0.2em $blackRgb3 !important;
+  border-color: rgba(27, 24, 28, 0.3);
+}
+
+.alert-danger {
+  color: white;
+  background-color: rgba(27, 24, 28, 0.3);
+  border-color: $black;
+}
+
+.login-link {
+  margin-top: 5%;
+  text-align: center;
+  color: $black;
+  text-decoration: none;
+  &:hover {
+    text-decoration: underline;
+  }
+}

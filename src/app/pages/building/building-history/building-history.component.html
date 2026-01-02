@@ -1,0 +1,106 @@
+<div class="table d-none d-sm-none d-md-block d-lg-block d-xl-block">
+  <table class="table table-bordered table-property-history">
+    <thead>
+      <tr>
+        <th class="table-property-history__img-h">Unit</th>
+        <th class="table-property-history__name-h">&nbsp;</th>
+        <th class="table-property-history__status-h">Status</th>
+        <th class="table-property-history__price-h">
+          Price <br />
+          <!-- <small>$ 7,061,250 Avg</small> -->
+          <!-- <small>$ {{ avgPrice }} Avg</small> -->
+        </th>
+        <th class="table-property-history__priceSqFt-h">
+          Price/ Sq. Ft. <br />
+          <!-- <small>$ 3,061/ sf Avg</small> -->
+          <!-- <small>$ {{ avgSqftPrice }}/ sf Avg</small> -->
+        </th>
+        <th class="table-property-history__bd-h">Bd</th>
+        <th class="table-property-history__ba-h">Ba</th>
+        <th class="table-property-history__sqFt-h">Sq.Ft</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="onlyForLoggedUsers || !items.length">
+        <td colspan="8">
+          <div class="login-no-listings">
+            <div *ngIf="onlyForLoggedUsers" class="login">
+              <span class="box-span"
+                >Local rules require you to <span class="span-a" (click)="login()">login</span> to see all
+                listings!</span
+              >
+            </div>
+            <div class="no-listings" *ngIf="!items.length && !onlyForLoggedUsers">
+              No {{ listingType }} listings in building!
+            </div>
+          </div>
+        </td>
+      </tr>
+      <tr *ngFor="let item of items">
+        <td>
+          <div class="table-property-history__img">
+            <a (click)="goToApartment(item)" [routerLink]="">
+              <img
+                data-src="{{ item.image }}"
+                class="embed-responsive"
+                alt=""
+                uiImageLoader
+                [onErrorSrc]="defaultImg"
+              />
+            </a>
+          </div>
+        </td>
+        <td>
+          <a (click)="goToApartment(item)" [routerLink]="">{{ item.address_with_unit }}</a>
+        </td>
+        <td>{{ item.status }}</td>
+        <td>${{ util.convertToLocaleString(item.listing_price) }}</td>
+        <td>${{ util.convertToLocaleString(item.listing_price_per_sqft) }}</td>
+        <td>{{ item.num_bedrooms }}</td>
+        <td>{{ item.num_baths }}</td>
+        <td>{{ util.convertToLocaleString(item.sqft) }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="d-block d-sm-block d-md-none d-lg-none d-xl-none">
+  <div class="units-list">
+    <div class="login-no-listings-mobile">
+      <div *ngIf="onlyForLoggedUsers" class="login">
+        <div class="box-span">
+          <span
+            >Local rules require you to <span class="span-a" (click)="login()">login</span> to see all listings!</span
+          >
+        </div>
+      </div>
+      <div class="no-listings" *ngIf="!items.length && !onlyForLoggedUsers">
+        No {{ listingType }} listings in building!
+      </div>
+    </div>
+    <div class="listing" *ngFor="let item of items">
+      <a (click)="goToApartment(item)" [routerLink]="">
+        <img data-src="{{ item.image }}" class="embed-responsive" alt="" uiImageLoader [onErrorSrc]="defaultImg" />
+      </a>
+      <div class="listing-content">
+        <a (click)="goToApartment(item)" [routerLink]="">{{ item.address_with_unit }}</a>
+        <span class="pricing-container">
+          <span class="price">${{ util.convertToLocaleString(item.listing_price) }}</span>
+        </span>
+        <span class="details-container">
+          <span>
+            <span *ngIf="item.num_bedrooms">{{ item.num_bedrooms }} Bd</span> |
+            <span *ngIf="item.num_baths">{{ item.num_baths }} Ba</span> |
+            <span
+              >{{ util.convertToLocaleString(item.sqft) }} <span>FT<sup>2</sup> </span></span
+            >
+            |
+            <span
+              >${{ util.convertToLocaleString(item.listing_price_per_sqft) }} /<span>FT<sup>2</sup> </span></span
+            >
+          </span>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>

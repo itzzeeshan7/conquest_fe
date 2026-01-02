@@ -1,0 +1,15 @@
+<header class="header" [class.header--dark]="isDarkMode">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="d-none d-lg-block col-lg-8">
+        <app-header-nav [class.header-nav--dark]="isDarkMode"></app-header-nav>
+      </div>
+      <div class="col-8 col-lg-4">
+        <app-header-logo [isDarkMode]="isDarkMode"></app-header-logo>
+      </div>
+      <div class="col-4 d-lg-none">
+        <app-header-nav [class.header-nav--dark]="isDarkMode"></app-header-nav>
+      </div>
+    </div>
+  </div>
+</header>

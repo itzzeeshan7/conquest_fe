@@ -1,0 +1,60 @@
+export interface IBudildingDetails {
+  building_id: number;
+  building_key: string;
+  building_name: string;
+  address: string;
+  num_stories: number;
+  city: string;
+  zip: string;
+  property_type: string;
+  place_name: string;
+  year_built: string;
+  num_units: number;
+  building_class: string;
+  concierge: number;
+  floor_number: number;
+  combined_longitude: string;
+  combined_latitude: string;
+  building_elevator: boolean;
+  building_pets: boolean;
+  saved_data: boolean;
+  image_list: string[];
+  user_loged: boolean;
+  scheduled_view: boolean;
+  scheduled_date: Date;
+  listing_service: string;
+  total_number_of_units: number;
+  lot_size: number;
+  region: string;
+}
+
+export class BuildingDetails implements IBudildingDetails {
+  building_id: number;
+  building_key: string;
+  building_name: string;
+  address: string;
+  num_stories: number;
+  city: string;
+  zip: string;
+  property_type: string;
+  place_name: string;
+  year_built: string;
+  num_units: number;
+  building_class: string;
+  concierge: number;
+  floor_number: number;
+  combined_longitude: string;
+  combined_latitude: string;
+  building_elevator: boolean;
+  building_pets: boolean;
+  saved_data: boolean;
+  image_list: string[];
+  user_loged: boolean;
+  scheduled_view: boolean;
+  scheduled_date: Date;
+  listing_service: string;
+  total_number_of_units: number;
+  lot_size: number;
+  region: string;
+  constructor() {}
+}

@@ -1,0 +1,49 @@
+.toggle {
+  input {
+    display: none;
+    font-size: 0.75em;
+    line-height: 14px;
+  }
+
+  label {
+    position: relative;
+    padding-right: 47px;
+
+    &:after {
+      position: absolute;
+      right: 0;
+      content: "";
+      background: rgba(0, 0, 0, 0.12);
+      display: block;
+      width: 34px;
+      height: 14px;
+      top: 50%;
+      margin-top: -7px;
+      border-radius: 25px;
+    }
+
+    &:before {
+      transition: all 0.2s ease-in-out;
+      position: absolute;
+      content: "";
+      display: block;
+      right: 0;
+      top: 50%;
+      margin-top: -10px;
+      background: #1b181c;
+      width: 20px;
+      height: 20px;
+      box-shadow:
+        0 1px 3px rgba(0, 0, 0, 0.2),
+        0 2px 2px rgba(0, 0, 0, 0.12),
+        0 0 2px rgba(0, 0, 0, 0.14);
+      border-radius: 50%;
+    }
+  }
+
+  & > input[type="checkbox"]:checked + label {
+    &:before {
+      right: 14px;
+    }
+  }
+}

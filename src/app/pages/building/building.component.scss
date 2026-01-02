@@ -1,0 +1,143 @@
+@import "../../../theme/theme-variables.scss";
+@import "bootstrap/scss/mixins";
+
+.slider-wrap {
+  margin-bottom: 36px;
+
+  .map-container {
+    width: 100%;
+    height: 360px;
+
+    agm-map {
+      height: 100%;
+      width: 100%;
+    }
+
+    #streetview-pano {
+      height: 360px;
+    }
+  }
+}
+
+.page-top-wrap {
+  margin-bottom: 18px;
+}
+
+.page-facts-wrap {
+  margin-bottom: 20px;
+}
+
+.property-history-wrap {
+  margin-bottom: 62px;
+  margin-top: -5%;
+}
+
+.building-amenities-wrap {
+  margin-bottom: 50px;
+  border-bottom: 1px solid black;
+}
+
+.building-facts-wrap {
+  margin-bottom: 50px;
+  border-bottom: 1px solid black;
+}
+
+.building-description-wrap {
+  margin-bottom: 50px;
+}
+
+.building-maps-wrap,
+.building-poi-wrap {
+  margin-bottom: 70px;
+}
+
+.flex {
+  padding: 0;
+}
+
+.building-list {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+}
+
+@media (max-width: 800px) {
+  .wrap {
+    flex-direction: column;
+
+    li {
+      flex: 1;
+      max-width: 100%;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .building-facts-wrap {
+    margin-bottom: 20px;
+
+    .container-width {
+      ul {
+        margin-left: 20px;
+      }
+    }
+  }
+
+  .building-amenities-wrap {
+    margin-bottom: 20px;
+  }
+
+  .property-history-wrap {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+}
+
+.search-form {
+  font-size: 0.875em;
+  height: 50px;
+  border: 1px solid rgba(179, 179, 179, 0.5);
+  padding-left: 58px;
+  padding-right: 40px;
+  border-radius: 5px;
+}
+
+.search-form-wrap {
+  position: relative;
+
+  button {
+    position: absolute;
+    right: 18px;
+    top: 0;
+    margin-top: 0;
+    height: 104%;
+    font-size: 17px;
+    color: #b3b3b3;
+  }
+
+  app-icon[icon="quick-search"] {
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    margin-top: -12px;
+    font-size: 17px;
+    color: #b3b3b3;
+    z-index: 1;
+  }
+
+  @include media-breakpoint-down(md) {
+    margin-bottom: 20px;
+  }
+}
+
+@media #{$mq-xxlarge} {
+  .slider-wrap {
+    .map-container {
+      height: 500px;
+
+      #streetview-pano {
+        height: 500px;
+      }
+    }
+  }
+}

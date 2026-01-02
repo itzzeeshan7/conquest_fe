@@ -1,0 +1,83 @@
+<div class="schedule-viewing-b">
+  <div class="row no-gutters schedule-viewing-b-inner">
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+      <div class="schedule-viewing-b__img">
+        <img data-src="{{ img }}" class="embed-responsive" alt="" uiImageLoader [onErrorSrc]="defaultImg" />
+      </div>
+    </div>
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+      <div class="schedule-viewing-b__rght">
+        <div class="schedule-viewing-b__title">
+          Schedule a Viewing
+          <small>
+            <app-icon icon="mark-1"></app-icon>
+            {{ info }}
+          </small>
+        </div>
+        <div *ngIf="!data.scheduled_view">
+          <div class="schedule-viewing-b__switcher d-flex align-items-center justify-content-center">
+            <div>
+              <input type="radio" name="type" id="in-person" class="d-none" />
+              <label for="in-person" (click)="changeViewingType('personal')" class="btn btn-black">In Person</label>
+            </div>
+            <div>
+              <input type="radio" name="type" id="virtual-tour" class="d-none" />
+              <label for="virtual-tour" (click)="changeViewingType('virtual')" class="btn btn-black"
+                >Virtual Tour</label
+              >
+            </div>
+          </div>
+          <div class="schedule-viewing-b__content d-flex align-items-center justify-content-center">
+            <button class="btn-arrow arrow-lft"></button>
+            <div class="schedule-viewing-b__content__dates">
+              <swiper-container [slidesPerView]="3">
+                <swiper-slide *ngFor="let date of dates; let i = index">
+                  <div class="date-inner" (click)="changeViewingDate(date)" [class.isActive]="isActiveDate(date)">
+                    <span class="text-uppercase d-block date-day">{{ date | date: 'E' }}</span>
+                    <strong class="date-date d-block">{{ date | date: 'dd' }}</strong>
+                    <span class="date-month d-block">{{ date | date: 'LLL' }}</span>
+                  </div>
+                </swiper-slide>
+              </swiper-container>
+            </div>
+            <button class="btn-arrow arrow-right"></button>
+          </div>
+        </div>
+        <div *ngIf="data.scheduled_view">
+          <div class="d-flex align-items-center justify-content-center">
+            <p class="text-muted text-center">
+              <span>You have scheduled a viewing for {{ formatDate(data.scheduled_date) }} </span>
+              <br />
+              <span
+                >Your request to schedule an appointment has been made, an agent will contact you shortly to
+                confirm.</span
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row no-gutters">
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-6"></div>
+    <div class="col-12 col-sm-12 col-lg-6 col-xl-6">
+      <div class="d-flex align-items-center justify-content-center">
+        <div class="form-check" (click)="notRobot()" *ngIf="showRobot">
+          <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+          <label class="form-check-label" for="flexCheckDefault"> Please confirm you are not a robot </label>
+        </div>
+        <button
+          class="btn btn-primary w-100"
+          (click)="schedule()"
+          *ngIf="showSend && !data.scheduled_view"
+          [disabled]="form.invalid"
+        >
+          <span>Schedule</span>
+        </button>
+        <button class="btn btn-primary w-100" (click)="cancelScheduled()" *ngIf="showCancel && data.scheduled_view">
+          <span>Cancel Schedule</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

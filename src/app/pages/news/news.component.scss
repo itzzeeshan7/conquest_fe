@@ -1,0 +1,59 @@
+@import "../../../theme/theme-variables";
+@import "bootstrap/scss/mixins";
+
+.about-section-b {
+  h2 {
+    margin-bottom: 40px;
+    font-size: 3em;
+
+    @include media-breakpoint-down(md) {
+      margin-bottom: 15px;
+      font-size: 1.5em;
+    }
+  }
+}
+
+.about-section {
+  padding: 60px 0;
+
+  @include media-breakpoint-down(md) {
+    padding: 40px 0;
+  }
+
+  .img {
+    max-width: 100%;
+    height: 350px;
+
+    img {
+      object-fit: cover;
+      object-position: center center;
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .listing {
+    margin-top: 5%;
+    text-align: justify;
+
+    p {
+      width: 80%;
+      margin-top: 5%;
+    }
+
+    h5 {
+      a {
+        color: $black;
+
+        &:focus {
+          color: #505050;
+          outline: none;
+        }
+
+        &:active {
+          font-weight: bold;
+        }
+      }
+    }
+  }
+}

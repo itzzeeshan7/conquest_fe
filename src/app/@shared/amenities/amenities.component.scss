@@ -1,0 +1,37 @@
+@import "../../../theme/theme-variables";
+
+.amenities-list {
+  padding-right: 10px;
+  flex-direction: row;
+
+  .ui-list {
+    li {
+      color: $black;
+    }
+  }
+
+  .item {
+    font-size: 1em;
+    color: $black;
+    margin: 15px 0;
+    // flex: 0 0 16.66666%;
+
+    .item-icon {
+      width: 45px;
+      font-size: 1.1em;
+      box-sizing: unset;
+    }
+
+    .item-name {
+      box-sizing: unset;
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .amenities-list {
+    ul {
+      margin-left: 20px;
+    }
+  }
+}

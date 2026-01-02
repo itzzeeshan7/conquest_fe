@@ -1,0 +1,49 @@
+@import "../../../theme/theme-variables";
+
+.breadcrumbs {
+  margin-bottom: 25px;
+
+  & > ul {
+    padding: 0;
+    margin: 0;
+
+    & > li {
+      list-style: none;
+      display: inline-block;
+      font-size: 0.75em;
+      position: relative;
+      padding-right: 24px;
+
+      a {
+        color: $black;
+      }
+
+      &:last-child {
+        &:after {
+          display: none;
+        }
+      }
+
+      &:after {
+        display: block;
+        position: absolute;
+        content: "";
+        background: url("/assets/img/chevron-breadcrumbs.png") no-repeat center;
+        background-size: contain;
+        width: 14px;
+        height: 14px;
+        right: 0;
+        top: 50%;
+        margin-top: -7px;
+      }
+    }
+  }
+}
+
+@media (max-width: 576px) {
+  .breadcrumbs {
+    ul {
+      text-align: center;
+    }
+  }
+}

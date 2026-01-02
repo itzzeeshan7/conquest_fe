@@ -1,0 +1,52 @@
+<div [class.d-none]="!showNav" class="d-lg-block">
+  <nav class="header-nav">
+    <div class="text-right">
+      <app-icon icon="cross" (click)="toggleNav()" class="header-nav__close d-lg-none"></app-icon>
+    </div>
+    <ul>
+      <!-- <li>
+        <a [routerLinkActive]="['active']" [routerLink]="'/leadership'">Leadership</a>
+      </li> -->
+      <li>
+        <a [routerLinkActive]="['active']" [routerLink]="'/about'" (click)="toggleNav()">About</a>
+      </li>
+      <li>
+        <a [routerLinkActive]="['active']" [routerLink]="'/news'" (click)="toggleNav()">News</a>
+      </li>
+      <li>
+        <a [routerLinkActive]="['active']" [routerLink]="'/contact'" (click)="toggleNav()">Contact</a>
+      </li>
+      <li *ngIf="!(isAuthenticate$ | async)">
+        <a (click)="toggleNav()" (click)="openDialog(Links.Login)">Sign In</a>
+      </li>
+      <li *ngIf="!(isAuthenticate$ | async)">
+        <a (click)="toggleNav()" (click)="openDialog(Links.Register)">Sign Up</a>
+      </li>
+      <li *ngIf="isAuthenticate$ | async">
+        <a (click)="toggleNav()" [routerLinkActive]="['active']" [routerLink]="['/user']">My Account</a>
+      </li>
+      <li *ngIf="isAuthenticate$ | async">
+        <a (click)="openDialog(Links.Logout)">Sign Out</a>
+      </li>
+    </ul>
+  </nav>
+</div>
+
+<div class="text-right d-lg-none d-block">
+  <button
+    (click)="toggleNav()"
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon">
+      <span></span>
+      <span></span>
+      <span></span>
+    </span>
+  </button>
+</div>

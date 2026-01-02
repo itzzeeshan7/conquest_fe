@@ -1,0 +1,396 @@
+<div class="container" #width>
+  <div class="col-xs-12 col-lg-8">
+    <div class="search-form-wrap">
+      <app-icon icon="quick-search"></app-icon>
+      <app-autocomplete
+        [query]="autosugestionString"
+        [searchType]="searchType"
+        (handleSelect)="selectSearchItem($event)"
+      >
+        <input
+          type="text"
+          class="form-control form-control-lg search-form"
+          placeholder="City, Neighborhood, Address, ZIP"
+          [(ngModel)]="autosugestionModel"
+          #autosugestion
+        />
+      </app-autocomplete>
+      <button class="btn btn-icon" (click)="clearQuery()">
+        <app-icon icon="cross"></app-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-breadcrumbs [navigation]="breadcrumbs"></app-breadcrumbs>
+<div class="slider-wrap">
+  <app-slider [images]="images" *ngIf="showImages && images" [statusCode]="apartmentData.status_code"></app-slider>
+  <div class="map-container" [hidden]="showInitMap()">
+    <google-map #AgmMap [options]="{ styles: mapStyles }" [center]="{ lat: lat, lng: lng }" width="100%" height="100%">
+      <map-marker [position]="{ lat: lat, lng: lng }" [options]="{ icon: markerIcon }"> </map-marker>
+    </google-map>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-7 offset-lg-1">
+      <div class="page-top-wrap">
+        <div class="d-md-flex d-lg-flex d-xl-flex align-items-center justify-content-between">
+          <div class="page-title-b">
+            <h1 class="page-title-b__name">
+              {{ apartmentData.address_with_unit }}
+            </h1>
+            <!-- <h4 class="page-title-b__cross-str">BETWEEN GRAND ST AND BROOME ST.</h4> -->
+            <h4 class="page-title-b__cross-str">
+              {{ apartmentData.place_name }} {{ apartmentData.region ? ', ' + apartmentData.region : '' }}
+            </h4>
+            <!-- <h6 class="page-title-b__disrtict">{{ buildingDetails.place_name }}</h6> -->
+          </div>
+          <div class="page-btns">
+            <!-- <button class="btn btn-gray" (click)="streetView('street')">
+              <app-icon icon="street-view"></app-icon>Street View
+            </button> -->
+            <button
+              class="btn btn-gray"
+              [class.btn-outline-gray]="!showImagesFloorPlan"
+              (click)="imagesView('floorPlan')"
+              *ngIf="images?.length > 0 && hasFloorPlan"
+            >
+              <app-icon icon="img"></app-icon>Floor Plan View
+            </button>
+            <button
+              class="btn btn-gray"
+              [class.btn-outline-gray]="!showView"
+              (click)="imagesView()"
+              *ngIf="images?.length > 0"
+            >
+              <app-icon icon="map"></app-icon>Apartment View
+            </button>
+            <button class="btn btn-gray" [class.btn-outline-gray]="!showMap" (click)="streetView('map')">
+              <app-icon icon="map"></app-icon>&nbsp;Map View
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-facts-wrap">
+        <app-facts [facts]="facts"></app-facts>
+      </div>
+
+      <div class="general-facts">
+        <div class="general-facts__top">
+          <div class="general-facts__item" *ngIf="apartmentData.num_bedrooms">
+            {{ apartmentData.num_bedrooms !== 0 ? 'Beds: ' + apartmentData.num_bedrooms : 'Studio' }}
+          </div>
+          <div class="general-facts__item" *ngIf="apartmentData.num_baths">Baths: {{ apartmentData.num_baths }}</div>
+          <div class="general-facts__item" *ngIf="apartmentData.num_rooms">Rooms: {{ apartmentData.num_rooms }}</div>
+          <div class="general-facts__item" *ngIf="apartmentData.sqft">
+            {{ util.convertToLocaleString(apartmentData.sqft) }} <span>FT<sup>2</sup></span>
+          </div>
+        </div>
+        <!-- <div class="general-facts__bottom">
+          {{ description }}
+        </div> -->
+      </div>
+      <div class="listing-details-wrap">
+        <div class="">
+          <div class="container-width">
+            <div class="listing-details" [ngClass]="{ 'blur-text': !showAllData }">Listing Information</div>
+            <div class="row message-loggin" *ngIf="!showAllData">
+              <span class="box-span">
+                Local rules require you to <span class="span-a" (click)="login()">login</span> to view this home's
+                details
+              </span>
+            </div>
+            <ul class="row d-flex ui-list ui-list-three-column wrap" *ngIf="showAllData">
+              <li class="col-lg-6 col-lg-3 col-12">
+                Listing Status: <strong>{{ apartmentData.status }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.availability_date">
+                Availability Date: <strong>{{ parseDate(apartmentData.availability_date) }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.association_fee_frequency">
+                Association Fee Frequency: <strong>{{ apartmentData.association_fee_frequency }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.listing_agreement">
+                Listing Agreement: <strong>{{ apartmentData.listing_agreement }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.deposit_amount">
+                Deposit Amount: <strong>{{ apartmentData.deposit_amount }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.lease_term">
+                Lease Term: <strong>{{ apartmentData.lease_term }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.hoa_fee">
+                Monthly Common Charges:
+                <strong>${{ util.convertToLocaleString(apartmentData.hoa_fee) }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.real_estate_tax">
+                Monthly Property Taxes:
+                <strong>{{ util.convertToLocaleString(apartmentData.real_estate_tax) }}%</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.flip_tax_description">
+                Transfer Fee: <strong>{{ apartmentData.flip_tax_description }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.rebny_id">
+                MLS ID: <strong>{{ apartmentData.rebny_id }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.max_financing_pct">
+                Max Financing Allowed:
+                <strong>{{ util.convertToLocaleString(apartmentData.max_financing_pct) }}%</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.floor_number">
+                Floors: <strong>{{ buildingDetails.floor_number }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.commission_amount">
+                Commission: <strong>{{ apartmentData.commission_amount }}%</strong>
+              </li>
+              <!-- <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.commission_type">
+                      Co-brokerage Agreement: <strong>{{ apartmentData.commission_type }}</strong>
+                    </li> -->
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.brokerage_name">
+                Broker:
+                <!-- <a *ngIf="apartmentData.brokerage_url" href="{{ apartmentData.brokerage_url }}" target="_blank">{{
+                        apartmentData.brokerage_name
+                      }}</a> -->
+                <strong>
+                  {{ apartmentData.brokerage_name }}
+                </strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.fire_place">
+                Fire Places: <strong>{{ apartmentData.fire_place }}</strong>
+              </li>
+              <li class="col-lg-6 col-lg-3 col-12" *ngIf="apartmentData.property_sub_type">
+                Configuration: <strong>{{ apartmentData.property_sub_type }}</strong>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <app-agent-contact [apartamentData]="apartmentData" [images]="totalImages"> </app-agent-contact>
+    </div>
+  </div>
+
+  <!-- Property: Unit Amenities -->
+  <div class="building-amenities-wrap" *ngIf="newBuildingAmenities">
+    <div class="">
+      <div class="container-width">
+        <div class="page-title">Unit Amenities</div>
+        <app-amenities [newList]="newApartmentAmenities"></app-amenities>
+      </div>
+    </div>
+  </div>
+  <!-- /Property: Unit Amenities -->
+
+  <!--/Build amenities-->
+  <div class="details">
+    <!--Build facts-->
+    <div class="building-facts-wrap" *ngIf="newBuildingAmenities">
+      <div class="container-width">
+        <div class="page-title">Building Amenities</div>
+        <app-amenities [newList]="newBuildingAmenities"></app-amenities>
+      </div>
+    </div>
+    <div class="building-facts-wrap">
+      <div class="container-width">
+        <div class="page-title" [ngClass]="{ 'blur-text': !showAllData }">Neighborhood & School</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap" *ngIf="showAllData">
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.cross_street">
+            Cross Street: <strong>{{ apartmentData.cross_street }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="nearSchools.length > 0">
+            School: <strong>{{ getNearestSchool() }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.place_name">
+            Location:
+            <strong
+              >{{ apartmentData.place_name }} {{ apartmentData.region ? ', ' + apartmentData.region : '' }}</strong
+            >
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.city">
+            City: <strong>{{ apartmentData.city }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.zip">
+            Zip: <strong>{{ apartmentData.zip }}</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="building-facts-wrap"
+      *ngIf="
+        apartmentData.floor_number || apartmentData.exposures || apartmentData.configuration || apartmentData.furnished
+      "
+    >
+      <div class="container-width">
+        <div class="page-title" [ngClass]="{ 'blur-text': !showAllData }">Unit Details</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap" *ngIf="showAllData">
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.floor_number">
+            Floor Number: <strong>{{ apartmentData.floor_number }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.exposures">
+            Exposure: <strong>{{ apartmentData.exposures }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.configuration">
+            Configuration: <strong>{{ apartmentData.configuration }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.furnished">
+            Furnished: <strong>{{ apartmentData.furnished }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.pet_policy">
+            Pet Policy: <strong>{{ apartmentData.pet_policy }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.laundry_features">
+            Laundry Features: <strong>{{ apartmentData.laundry_features }}</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="building-facts-wrap">
+      <div class="container-width">
+        <div class="page-title" [ngClass]="{ 'blur-text': !showAllData }">Building Details</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap" *ngIf="showAllData">
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="false">Acres: <strong>-</strong></li>
+          <li *ngIf="buildingDetails?.building_name" class="col-xl-4 col-lg-3 col-12">
+            Building Name:
+            <strong>{{ buildingDetails.building_name }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails?.total_number_of_units">
+            Total Units: <strong>{{ buildingDetails.total_number_of_units }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails?.year_built">
+            Year Built: <strong>{{ buildingDetails.year_built }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails?.property_type">
+            Building Type: <strong>{{ buildingDetails.property_type }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails?.lot_size">
+            Lot Size: <strong>{{ util.convertToLocaleString(buildingDetails.lot_size) }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails?.lot_dimensions">
+            Lot Dimensions: <strong>{{ buildingDetails.lot_dimensions }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="false">Lot Ft: <strong>-</strong></li>
+        </ul>
+      </div>
+    </div>
+    <!-- <div class="building-facts-wrap">
+      <div class="container-width">
+        <div class="page-title" [ngClass]="{ 'blur-text': !showAllData }">Policies</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap" *ngIf="showAllData">
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="apartmentData.renting_allowed">
+            Renting Alowed: <strong>{{ apartmentData.renting_allowed ? 'Yes' : 'No' }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12">
+            Pied-à-Terre Allowed: <strong>{{ apartmentData.pied_a_terre ? 'Yes' : 'No' }}</strong>
+          </li>
+        </ul>
+      </div>
+    </div> -->
+  </div>
+
+  <!--Build description-->
+  <div class="building-description-wrap" *ngIf="showAllData">
+    <div>
+      <div class="container-width">
+        <div class="page-title">Description</div>
+        <article [innerHTML]="apartmentData.marketing_description"></article>
+      </div>
+    </div>
+  </div>
+  <!--/Build description-->
+
+  <!-- <div class="listing-history-wrap">
+    <div>
+      <div class="container-width scroll-area">
+        <app-listing-history></app-listing-history>
+      </div>
+    </div>
+  </div> -->
+
+  <!--Building maps-->
+  <div class="building-maps-wrap" *ngIf="nearSchools.length > 0 || subwayStations?.length > 0">
+    <div>
+      <div class="container-width">
+        <div class="page-title">Map</div>
+        <nav ngbNav #nav4="ngbNav" class="nav-tabs" [destroyOnHide]="true">
+          <ng-container *ngIf="nearSchools.length > 0" ngbNavItem>
+            <a ngbNavLink>School</a>
+            <ng-template ngbNavContent>
+              <br />
+              <app-maps
+                [places]="nearSchools"
+                [location]="{ latitude: lat, longitude: lng }"
+                [markerType]="markerTypeEnum.marker"
+              ></app-maps>
+            </ng-template>
+          </ng-container>
+          <!-- <ng-container *ngIf="cityBike.length > 0" ngbNavItem>
+            <a ngbNavLink>City Bike</a>
+            <ng-template ngbNavContent>
+              <br />
+              <app-maps
+                [places]="cityBike"
+                [location]="{ latitude: lat, longitude: lng }"
+                [markerType]="markerTypeEnum.marker"
+              ></app-maps>
+            </ng-template>
+          </ng-container> -->
+          <ng-container *ngIf="subwayStations?.length > 0" ngbNavItem>
+            <a ngbNavLink>Transportation </a>
+            <ng-template ngbNavContent>
+              <br />
+              <app-maps
+                [places]="subwayStations"
+                [location]="{ latitude: lat, longitude: lng }"
+                [markerType]="markerTypeEnum.marker"
+              >
+              </app-maps>
+            </ng-template>
+          </ng-container>
+        </nav>
+        <div [ngbNavOutlet]="nav4"></div>
+      </div>
+    </div>
+  </div>
+  <!--/Building maps-->
+
+  <!-- Property: Schedule viewing-->
+  <div class="building-poi-wrap" *ngIf="isAuthenticate && apartmentData.status_code == 100">
+    <div class="row">
+      <div class="col-12">
+        <app-schedule-viewing
+          *ngIf="images"
+          img="{{ images[images.length - 1] }}"
+          [data]="apartmentData"
+          info="{{ apartmentData.address_with_unit }}"
+        >
+        </app-schedule-viewing>
+      </div>
+    </div>
+  </div>
+  <!--/ Property: Schedule viewing-->
+  <div class="apartment-list" *ngIf="apartments.length > 0">
+    <div>
+      <div class="container-width">
+        <div class="page-title">Similar Homes</div>
+        <app-apartments [apartments]="apartments"></app-apartments>
+      </div>
+    </div>
+  </div>
+  <div>
+    <p>
+      This information is not verified for authenticity or accuracy and is not guaranteed and may not reflect all real
+      estate activity in the market. ©2023 The Real Estate Board of New York, Inc., All rights reserved. The source of
+      the displayed data is either the property owner or public record provided by non-governmental third parties. It is
+      believed to be reliable but not guaranteed. This information is provided exclusively for consumers' personal,
+      non-commercial use. Information Copyright 2023, REBNY MLS. All data is deemed reliable but is not guaranteed
+      accurate by Conquest. See <a [routerLink]="'/terms-of-service'">Terms of Service</a> for additional restrictions.
+      Conquest · Phone:<a href="tel:+1-212-777-9690"> (212) 777-9690 </a> · New York, NY
+    </p>
+  </div>
+</div>
+
+<app-footer></app-footer>

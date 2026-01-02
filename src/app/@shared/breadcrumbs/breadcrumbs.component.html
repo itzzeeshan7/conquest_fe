@@ -1,0 +1,68 @@
+<div class="container">
+  <div class="breadcrumbs" *ngIf="navigation">
+    <ul>
+      <li>
+        <a>NY</a>
+      </li>
+      <li *ngIf="navigation.city">
+        <a [routerLink]="['/search']" [queryParams]="{ salesOrRental: 'S', type: 'City', search: navigation.city }">{{
+          navigation.city
+        }}</a>
+      </li>
+      <li *ngIf="navigation.zip">
+        <a [routerLink]="['/search']" [queryParams]="{ salesOrRental: 'S', type: 'Zip', search: navigation.zip }">{{
+          navigation.zip
+        }}</a>
+      </li>
+      <li *ngIf="navigation.region">
+        <a
+          [routerLink]="['/search']"
+          [queryParams]="{ salesOrRental: 'S', type: 'Region', search: navigation.region }"
+          >{{ navigation.region }}</a
+        >
+      </li>
+      <li *ngIf="navigation.place_name">
+        <a
+          [routerLink]="['/search']"
+          [queryParams]="{ salesOrRental: 'S', type: 'Places', search: navigation.place_name }"
+          >{{ navigation.place_name }}</a
+        >
+      </li>
+      <li *ngIf="!navigation.building_name && !isBuildingPage">
+        <a
+          [routerLink]="['/building']"
+          [queryParams]="{
+            salesOrRental: 'S',
+            type: 'Address',
+            search: navigation.address,
+            address: navigation.address,
+          }"
+        >
+          {{ navigation.address }}</a
+        >
+      </li>
+      <li *ngIf="navigation.building_name && !isBuildingPage">
+        <a
+          [routerLink]="['/building']"
+          [queryParams]="{
+            salesOrRental: 'S',
+            type: 'Address',
+            search: navigation.building_name,
+            address: navigation.address,
+          }"
+        >
+          {{ navigation.address }} - {{ navigation.building_name }}</a
+        >
+      </li>
+      <li *ngIf="!navigation.building_name && isBuildingPage">
+        <a> {{ navigation.address }}</a>
+      </li>
+      <li *ngIf="navigation.building_name && isBuildingPage">
+        <a> {{ navigation.address }} - {{ navigation.building_name }}</a>
+      </li>
+      <li *ngIf="!isBuildingPage">
+        <a> {{ navigation.address_with_unit }}</a>
+      </li>
+    </ul>
+  </div>
+</div>

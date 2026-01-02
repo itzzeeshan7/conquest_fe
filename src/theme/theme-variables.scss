@@ -1,0 +1,85 @@
+/*
+ * Application global variables.
+ */
+
+// Set Font Awesome font path
+$fa-font-path: "~@fortawesome/fontawesome-free/webfonts";
+
+// ---------------------------------------------------------------------------
+// Bootstrap variables
+//
+// Override Bootstrap variables here to suite your theme.
+// Copy variables you want to customize from node_modules/bootstrap/scss/_variables.scss
+
+//
+// Color system
+//
+
+$app-black: #1b181c;
+$app-gray: rgba(27, 24, 28, 0.5);
+$app-dark: #1b181c;
+$app-blue: #4584ff;
+$app-gray: #505050;
+$app-dark-gray: #9f9f9f;
+
+$font-family-sans-serif: "Luxia";
+$font-family-secondary: "Luxia";
+$input-border-color: #b3b3b3;
+$input-border-radius: 3px;
+
+$btn-padding-y: 11px;
+$btn-padding-x: 12px;
+$btn-font-size: 0.9375em;
+$btn-border-radius: 0;
+$btn-border-radius-sm: 0;
+$btn-border-width: 0;
+$input-btn-padding-y-sm: 8px;
+$input-btn-padding-x-sm: 16px;
+$input-btn-font-size-sm: 0.8125em;
+
+$bp-small: 48em; // 768px
+$bp-mobile: 62em; // 992px
+$bp-medium: 64em; // 1024px
+$bp-large: 85.375em; // 1366px
+$bp-xlarge: 120em; // 1920px
+$bp-xxlarge: 160em; // 2560px
+
+// Media Queries
+$mq-mobile-portrait: "(max-width: #{$bp-small}) and (orientation: portrait)";
+$mq-mobile-landscape: "(max-width: #{$bp-mobile}) and (orientation: landscape)";
+$mq-small: "(min-width: #{$bp-small})";
+$mq-medium: "(min-width: #{$bp-medium})";
+$mq-large: "(min-width: #{$bp-large})";
+$mq-xlarge: "(min-width: #{$bp-xlarge})";
+$mq-xxlarge: "(min-width: #{$bp-xxlarge})";
+$mq-retina: "(-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi)";
+
+$blue: #4584ff;
+$black: #1b181c;
+$blackRgb3: rgba(27, 24, 28, 0.3);
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1400px !important;
+  }
+}
+
+@media (min-width: 2000px) {
+  .container {
+    max-width: 2000px !important;
+  }
+}
+
+@media #{$mq-xxlarge} {
+  :root {
+    font-size: 18px;
+  }
+  .container {
+    max-width: 2500px !important;
+  }
+}
+
+// Use Bootstrap defaults for other variables, imported here so we can access all app variables in one place when used
+// in components.
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";

@@ -1,0 +1,66 @@
+<div class="autocomplete-wrap">
+  <ng-content></ng-content>
+  <div class="autocomplete-list" *ngIf="show">
+    <div class="autocomplete-list__group mb-pb-0" *ngIf="autocomplete.length === 0 && loading">
+      <ul class="autocomplete-list__items">
+        <li class="no-hover-list-item">Loading data</li>
+      </ul>
+    </div>
+    <div class="autocomplete-list__group mb-pb-0" *ngIf="autocomplete.length === 0 && !loading && !!query">
+      <ul class="autocomplete-list__items">
+        <li class="no-hover-list-item">No active listings</li>
+      </ul>
+    </div>
+    <div *ngIf="autocomplete.length > 0" id="server">
+      <div class="autocomplete-list__group" *ngFor="let header of headers">
+        <div class="autocomplete-list__group-name">{{ header }}</div>
+        <ul class="autocomplete-list__items">
+          <li *ngFor="let element of autocomplete | autocompleteFilter: header" (click)="select(element)">
+            <a>
+              <h6 *ngIf="header == 'Places'">{{ element.place_name }}</h6>
+
+              <h6 *ngIf="header == 'Region'">{{ element.region }}</h6>
+
+              <h6 *ngIf="header == 'Address'">{{ element.address }}</h6>
+
+              <h6 *ngIf="header == 'Cities'">{{ element.city }}</h6>
+
+              <h6 *ngIf="header == 'Zip'">{{ element.zip }}</h6>
+
+              <h6 *ngIf="header == 'Buildings'">{{ element.building_name }}</h6>
+              <span *ngIf="header == 'Buildings'">{{ element.address }}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div id="local" *ngIf="previousSearch.length > 0 && !query">
+      <div class="autocomplete-list__group mb-pb-0" *ngIf="autocomplete.length === 0 && !loading">
+        <ul class="autocomplete-list__items">
+          <li class="no-hover-list-item">Recent Searches</li>
+        </ul>
+      </div>
+      <div class="autocomplete-list__group" *ngFor="let header of headers">
+        <div class="autocomplete-list__group-name">{{ header }}</div>
+        <ul class="autocomplete-list__items">
+          <li *ngFor="let element of previousSearch | autocompleteFilter: header" (click)="select(element)">
+            <a>
+              <h6 *ngIf="header == 'Places'">{{ element.place_name }}</h6>
+
+              <h6 *ngIf="header == 'Address'">{{ element.address }}</h6>
+
+              <h6 *ngIf="header == 'Cities'">{{ element.city }}</h6>
+
+              <h6 *ngIf="header == 'Zip'">{{ element.zip }}</h6>
+
+              <h6 *ngIf="header == 'Buildings'">{{ element.building_name }}</h6>
+              <span *ngIf="header == 'Buildings'">{{ element.address }}</span>
+
+              <h6 *ngIf="header == 'Resent Searches'">{{ element.name }}</h6>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

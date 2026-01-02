@@ -1,0 +1,102 @@
+/*
+ * Global application theme.
+ * Framework overrides and customization goes here.
+ */
+@import "bootstrap/scss/mixins";
+
+.full-h {
+  height: 100%;
+}
+
+body {
+  height: 100vh;
+}
+
+// @media (max-width: 576px) {
+//   body {
+//     height: 150vh;
+//   }
+// }
+
+article {
+  line-height: 2em;
+}
+
+.properties-rows {
+  margin-right: -10px;
+  margin-left: -10px;
+  max-height: 600px;
+  overflow-y: auto;
+
+  @media (max-width: 576px) {
+    max-height: fit-content;
+    scroll-behavior: smooth;
+    > * {
+      will-change: unset !important;
+    }
+  }
+
+  .col-grid {
+    width: 20%;
+
+    @include media-breakpoint-down(md) {
+      width: 100%;
+    }
+  }
+
+  .col-lg-4,
+  .col-xs-12,
+  .col-grid {
+    // padding: 0 10px;
+
+    app-property-item {
+      margin-bottom: 20px;
+      display: block;
+    }
+  }
+}
+
+.banner-outer {
+  // height: 645px;
+  margin-top: 5%;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.conquest-advisor {
+  margin-top: 5%;
+}
+
+@media (min-height: 1100px) {
+  .properties-rows {
+    max-height: 1000px;
+  }
+
+  .banner-outer {
+    height: 745px;
+  }
+}
+
+@media #{$mq-xxlarge} {
+  .properties-rows {
+    max-height: 1400px;
+  }
+
+  .banner-outer {
+    height: 845px;
+  }
+}
+
+@import "partials/luxia-font";
+@import "partials/icons-font";
+@import "partials/buttons";
+@import "partials/helpers";
+@import "partials/lists";
+@import "partials/tabs";
+@import "partials/forms";
+@import "pages/building-page";
+@import "./theme-variables.scss";

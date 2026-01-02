@@ -1,0 +1,42 @@
+@import "../../../theme/theme-variables";
+
+.facts {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+
+  .fact {
+    text-align: center;
+    flex-basis: 100%;
+    position: relative;
+
+    &:last-child {
+      &:after {
+        display: none;
+      }
+    }
+
+    &__caption {
+      font-size: 0.625em;
+      text-transform: uppercase;
+      padding: 0 14px;
+    }
+
+    &__value {
+      font-size: 1.25em;
+    }
+
+    &:after {
+      width: 0.5px;
+      height: 50px;
+      background: $black;
+      top: 0;
+      bottom: 0;
+      right: 0;
+      margin: auto;
+      position: absolute;
+      content: "";
+      display: block;
+    }
+  }
+}

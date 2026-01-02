@@ -1,0 +1,102 @@
+<section>
+  <div class="container full-h">
+    <div class="row">
+      <div class="col-12">
+        <div class="banner-outer">
+          <img src="../../../assets/img/leadership.jpg" />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-lg-6 d-block">
+        <h1>TEAM</h1>
+        <div class="about-section-b">
+          <p>
+            Conquest’s team has a proven track record, with redevelopment projects in excess of 300,000 square feet.
+            Whether in a management or an advisory role, conquest has the skills and experience necessary to navigate
+            the complexities of today’s development projects.<br />
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col col-md-6 x-type-col d-block">
+        <img class="img-responsive" src="../../../assets/img/team1.jpg" />
+
+        <div class="team-name">
+          <h4>
+            {{ managerName }}
+          </h4>
+        </div>
+        <div class="team-description" [@slideInOut] *ngIf="showManager">
+          {{ managerDescription }}
+        </div>
+        <div>
+          <button class="btn btn-outline mb-5" (click)="showManager = !showManager">
+            {{ showManager ? 'Show Less' : 'Show More' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col col-md-3 col-lg-3 x-type-col d-block">
+        <img class="img-responsive" src="../../../assets/img/team2.jpg" />
+
+        <div class="team-name">
+          <h4>
+            {{ luxuryName }}
+          </h4>
+        </div>
+        <div class="team-description" [@slideInOut] *ngIf="showLuxury">
+          {{ luxuryDescription }}
+        </div>
+        <div>
+          <button class="btn btn-outline" (click)="showLuxury = !showLuxury">
+            {{ showLuxury ? 'Show Less' : 'Show More' }}
+          </button>
+        </div>
+      </div>
+      <div class="col col-md-3 col-lg-3 x-type-col d-block">
+        <img class="img-responsive" src="../../../assets/img/team3.jpg" />
+
+        <div class="team-name">
+          <h4>
+            {{ investmentsName }}
+          </h4>
+        </div>
+        <div class="team-description" [@slideInOut] *ngIf="investments">
+          {{ investmentsDescription }}
+        </div>
+        <div>
+          <button class="btn btn-outline" (click)="investments = !investments">
+            {{ showLuxury ? 'Show Less' : 'Show More' }}
+          </button>
+        </div>
+      </div>
+      <div class="col col-md-3 col-lg-3 x-type-col d-block">
+        <img class="img-responsive" src="../../../assets/img/team4.jpg" />
+
+        <div class="team-name">
+          <h4>MARLEN</h4>
+        </div>
+      </div>
+      <div class="col col-md-3 col-lg-3 x-type-col d-block">
+        <img class="img-responsive" src="../../../assets/img/team5.jpg" />
+
+        <div class="team-name">
+          <h4>SCOTT CARLSON LUXURY SALES / INVESTMENTS</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<app-footer></app-footer>

@@ -1,0 +1,9 @@
+<div class="container full-h user-container">
+  <div class="nav-user">
+    <a [routerLink]="['./saved-data']" [routerLinkActive]="['active']">Liked Data</a>
+    <a [routerLink]="['./details']" [routerLinkActive]="['active']">My Account</a>
+    <a *ngIf="isAdmin" [routerLink]="['./users-list']" [routerLinkActive]="['active']">Users</a>
+    <a *ngIf="isAdmin" [routerLink]="['./external-apis']" [routerLinkActive]="['active']">External APIs</a>
+  </div>
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,29 @@
+@import "src/theme/theme-variables";
+@import "../../../../../../node_modules/bootstrap/scss/mixins/breakpoints";
+
+.btn-yes {
+  color: #fff;
+  background-color: $black;
+  border-color: $black;
+}
+
+.btn-no {
+  color: $black;
+  background-color: #fff;
+  border-color: $black;
+  border: 1px solid;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active:focus,
+.btn-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2em $blackRgb3 !important;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,
+.btn-primary:not(:disabled):not(.disabled).active,
+.show > .btn-primary.dropdown-toggle {
+  color: #fff;
+  background-color: $black;
+  border-color: $black;
+}

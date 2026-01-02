@@ -1,0 +1,25 @@
+<!-- <div class="amenities-list row">
+  <div class="item col-sm-4 col-lg-2 d-flex align-items-center" *ngFor="let item of amenities">
+    <div class="item-icon">
+      <app-icon *ngIf="item.icon" icon="{{ item.icon }}"></app-icon>
+    </div>
+    <div class="item-name">
+      {{ item.name }}
+    </div>
+  </div>
+</div> -->
+<div class="amenities-list" *ngIf="list">
+  <ul class="row d-flex ui-list ui-list-three-column wrap">
+    <li class="col-xl-4 col-lg-3 col-12" *ngFor="let item of amenities">
+      {{ item.name }}
+    </li>
+  </ul>
+</div>
+<div class="amenities-list" *ngIf="newList">
+  <ul class="row d-flex ui-list ui-list-three-column wrap">
+    <li class="col-xl-4 col-lg-3 col-12" *ngFor="let item of newAmenities">
+      <strong>{{ item.title }}</strong>
+      {{ item.name }}
+    </li>
+  </ul>
+</div>

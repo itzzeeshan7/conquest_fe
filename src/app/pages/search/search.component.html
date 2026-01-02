@@ -1,0 +1,190 @@
+<div #width>
+  <section class="search-bar">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-xs-12 col-lg-8">
+          <div class="search-form-wrap">
+            <app-icon icon="quick-search"></app-icon>
+            <app-autocomplete
+              [query]="autosugestionString"
+              [searchType]="searchType"
+              (handleSelect)="handleAutocompleteSelect($event)"
+            >
+              <input
+                type="text"
+                class="form-control form-control-lg search-form"
+                placeholder="City, Neighborhood, Address, ZIP"
+                [(ngModel)]="autosugestionModel"
+                #autosugestion
+              />
+            </app-autocomplete>
+            <button class="btn btn-icon" (click)="clearQuery()">
+              <app-icon icon="cross"></app-icon>
+            </button>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-lg-4">
+          <div class="search-bar__filters d-flex align-items-center flex-justify-center">
+            <div class="price-filter">
+              <ng-select
+                [(ngModel)]="filterByPriceMin"
+                [items]="filterByPriceValuesMin"
+                bindLabel="formmated"
+                bindValue="value"
+                (change)="changeFilterByPrice(filterByPriceMin, filterByPriceMax, true)"
+              >
+              </ng-select>
+            </div>
+            <div class="price-filter">
+              <ng-select
+                [(ngModel)]="filterByPriceMax"
+                [items]="filterByPriceValuesMax"
+                bindLabel="formmated"
+                bindValue="value"
+                (change)="changeFilterByPrice(filterByPriceMin, filterByPriceMax, true)"
+              >
+              </ng-select>
+            </div>
+            <button (click)="toggleFilters()">
+              <div class="icon-wrap">
+                <img src="./assets/img/font-icons/filters.svg" alt="" />
+              </div>
+              <p>Filters</p>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="search-sort">
+    <div class="container">
+      <div class="row align-items-center">
+        <div class="col-12 col-md-7">
+          <p class="search-sort-text d-inline-block">
+            {{ visibleListingNo }} {{ items.length > 0 ? 'of' : '' }} {{ totalResults }} results | Sort By:
+          </p>
+          <div ngbDropdown placement="bottom-left" class="d-inline-block">
+            <button class="btn sort-btn" id="dropdownBasic2" ngbDropdownToggle>{{ sortBy }}</button>
+            <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+              <button (click)="sortListBy('Newest')" *ngIf="sortBy !== 'Newest'" ngbDropdownItem>Newest</button>
+              <button (click)="sortListBy('Oldest')" *ngIf="sortBy !== 'Oldest'" ngbDropdownItem>Oldest</button>
+              <button (click)="sortListBy('Price lowest')" *ngIf="sortBy !== 'Price lowest'" ngbDropdownItem>
+                Price lowest
+              </button>
+              <button (click)="sortListBy('Price highest')" *ngIf="sortBy !== 'Price highest'" ngbDropdownItem>
+                Price highest
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="d-none d-md-block col-md-5">
+          <span>Use map to update or filter results</span>
+        </div>
+
+        <div class="col-12 text-right d-lg-none d-xl-none" *ngIf="mobileView">
+          <div class="toggle d-inline-block">
+            <input type="checkbox" [(ngModel)]="showListings" id="view-mode" />
+            <label for="view-mode">Listings</label>
+          </div>
+          <span class="d-inline-block"> &nbsp;Map </span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="result-section full-h" *ngIf="showListings">
+    <div class="container full-h">
+      <div class="row d-flex full-h">
+        <div class="col-xs-12 d-lg-none" *ngIf="!isGridMode">
+          <div class="search-map-container"></div>
+        </div>
+        <div class="col-xs-12" [class.col-12]="isGridMode" [class.col-lg-7]="!isGridMode" #listingGrid>
+          <div class="row properties-rows">
+            <cdk-virtual-scroll-viewport [ngStyle]="virtualScrollStyle" itemSize="20">
+              <div class="row">
+                <ng-container *cdkVirtualFor="let chunk of itemsChunk">
+                  <div class="col-xs-12 col-xl-4 col-lg-6 col-md-6 col-xxl-3" *ngFor="let item of chunk">
+                    <app-property-item [item]="item" (click)="goToApartmentPage(item)"></app-property-item>
+                  </div>
+                </ng-container>
+              </div>
+            </cdk-virtual-scroll-viewport>
+          </div>
+        </div>
+        <div class="d-none d-md-none d-lg-block d-xl-block col-5" id="map" *ngIf="!mobileView">
+          <div class="search-map-container">
+            <google-map
+              [options]="{ styles: mapStyles, disableDefaultUI: false }"
+              [center]="{ lat: lat, lng: lng }"
+              #AgmMap
+              [zoom]="12"
+              (boundsChanged)="boundsChange($event)"
+              width="100%"
+              height="100%"
+            >
+              <map-marker
+                *ngFor="let marker of markers; let i = index"
+                [position]="{ lat: marker.lat, lng: marker.lng }"
+                [options]="{ icon: markerIcon }"
+                (mapClick)="select_marker(infoWindow)"
+              >
+                <map-info-window #infoWindow>
+                  <app-property-item [item]="marker.item" (click)="goToApartmentPage(marker.item)"> </app-property-item>
+                </map-info-window>
+              </map-marker>
+            </google-map>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="result-section full-h" *ngIf="!showListings">
+    <div class="row align-items-center">
+      <div class="col-12">
+        <div class="search-map-container">
+          <google-map
+            [options]="{ styles: mapStyles, disableDefaultUI: false, scrollwheel: false }"
+            [center]="{ lat: lat, lng: lng }"
+            #AgmMap
+            [zoom]="12"
+            (boundsChanged)="boundsChange($event)"
+            width="100%"
+            height="100%"
+          >
+            <map-marker
+              *ngFor="let marker of markers; let i = index"
+              [position]="{ lat: marker.lat, lng: marker.lng }"
+              [options]="{ icon: markerIcon }"
+              (mapClick)="select_marker(infoWindow)"
+            >
+              <map-info-window #infoWindow>
+                <app-property-item [item]="marker.item" (click)="goToApartmentPage(marker.item)"> </app-property-item>
+              </map-info-window>
+            </map-marker>
+          </google-map>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <app-search-filtres
+    (hide)="toggleFilters()"
+    (visibility)="(showFilters)"
+    [class.display-filters]="showFilters"
+    [filters]="otherFilters"
+    [filterByPrice]="{ min: filterByPriceValuesMin, max: filterByPriceValuesMax }"
+    (priceFilterChange)="changeFilterByPriceFromFilter($event)"
+    (bathsFilterChange)="changeBedsBathsFilterChange($event)"
+    (bedsFilterChange)="changeBedsBathsFilterChange($event)"
+    (propertyFiltersChange)="propertyFilterChange($event)"
+    (propertyServicesChange)="propertyServicesChange($event)"
+    (buttonServiceChange)="buttonServiceChange($event)"
+    (resetFilters)="resetFilters($event)"
+  >
+  </app-search-filtres>
+  <div class="overlay" (click)="toggleFilters()" *ngIf="showFilters"></div>
+</div>
+<app-footer></app-footer>

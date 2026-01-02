@@ -1,0 +1,7 @@
+<div class="appartaments">
+  <app-apartament-card
+    *ngFor="let apartament of apartments"
+    [apartament]="apartament"
+    (removeApartment)="removeAppartmentFromList(apartament)"
+  ></app-apartament-card>
+</div>

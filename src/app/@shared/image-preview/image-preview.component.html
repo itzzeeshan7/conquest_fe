@@ -1,0 +1,33 @@
+<div class="container">
+  <div class="close-button">
+    <button class="btn btn-icon" (click)="close()">
+      <span class="icon-cross"></span>
+    </button>
+  </div>
+  <div class="card-body">
+    <div class="row justify-content-md-center">
+      <div class="slider-wrap">
+        <div #width class="slider-container position-relative">
+          <swiper-container class="slider" [navigation]="true" [loop]="true">
+            <swiper-slide *ngFor="let image of images">
+              <img data-src="{{ image }}" alt="" uiImageLoader [onErrorSrc]="defaultImg" />
+            </swiper-slide>
+          </swiper-container>
+          <button class="slider__arrow slider__arrow-prev"></button>
+          <button class="slider__arrow slider__arrow-next"></button>
+          <div class="slider__container position-absolute">
+            <div class="container">
+              <div class="row">
+                <div class="col-5 col-md-6 col-lg-6 col-xl-6 text-right">
+                  <div class="slider__counter d-inline-block">
+                    {{ currentSliderIndex + 1 }} / {{ images.length || 0 }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

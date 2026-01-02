@@ -1,0 +1,20 @@
+{
+  "APP_NAME": "fe conquest",
+  "About": "About",
+  "Hello world !": "Hello world !",
+  "Home": "Home",
+  "Logged in as": "Logged in as",
+  "Login": "Login",
+  "Logout": "Logout",
+  "Password": "Password",
+
+  "Email": "Email",
+  "Email or password incorrect.": "Email or password incorrect.",
+  "Username": "Username",
+  "Remember me": "Remember me",
+  "Version": "Version",
+
+  "Invalid email format": "Invalid email format",
+  "This field is required": "This field is required",
+  "Passwords must match": "Passwords must match"
+}

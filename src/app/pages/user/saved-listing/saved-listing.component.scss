@@ -1,0 +1,33 @@
+@import "../../../../theme/theme-variables";
+
+.user-info {
+  border-top: 1px solid #d9d9d9;
+  height: 700px;
+  overflow-y: auto;
+
+  .properties-rows {
+    max-height: fit-content;
+  }
+
+  h5 {
+    color: $app-black;
+    cursor: pointer;
+
+    &:hover,
+    &:focus {
+      // text-shadow: 0 0 0 0.2em $app-black;
+      text-shadow: 1px 1px $blackRgb3;
+      text-decoration: underline;
+    }
+  }
+}
+
+@media #{$mq-xxlarge} {
+  .user-info {
+    height: 1200px;
+  }
+}
+
+a {
+  color: #1b181c;
+}

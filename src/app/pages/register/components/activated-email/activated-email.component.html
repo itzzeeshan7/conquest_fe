@@ -1,0 +1,8 @@
+<section>
+  <h4 *ngIf="!isAuth" class="text-danger">Thank you for validating your email. You can now log in!</h4>
+  <h5 *ngIf="!isAuth">Redirecting to home page for: {{ time }}</h5>
+  <h4 *ngIf="isAuth && !isSuccess">Wait...</h4>
+  <h4 *ngIf="isAuth && isSuccess" class="text-success">Congratulations you successfully activating page</h4>
+  <h5 *ngIf="isAuth && isSuccess">Refirecting to home page for {{ time }}</h5>
+  <h4 *ngIf="error" class="text-danger">Invalid Code</h4>
+</section>

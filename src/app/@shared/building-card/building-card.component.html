@@ -1,0 +1,13 @@
+<div class="building-card">
+  <div class="building-card__image">
+    <img data-src="{{ building.img }}" alt="" />
+  </div>
+  <div class="building-card__body">
+    <div class="building-card__name">
+      {{ building.building_name || building.address }}
+    </div>
+    <div class="building-card__address" *ngIf="building.building_name">
+      {{ building.address }}
+    </div>
+  </div>
+</div>

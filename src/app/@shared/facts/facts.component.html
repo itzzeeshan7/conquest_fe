@@ -1,0 +1,10 @@
+<div class="facts" *ngIf="facts && facts.length">
+  <div class="fact" *ngFor="let fact of facts">
+    <div class="fact__value">
+      {{ fact.value }}
+    </div>
+    <div class="fact__caption">
+      {{ fact.caption }}
+    </div>
+  </div>
+</div>

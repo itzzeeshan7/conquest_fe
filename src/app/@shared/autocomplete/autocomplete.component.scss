@@ -1,0 +1,82 @@
+@import "../../../theme/theme-variables";
+
+:host {
+  min-height: 40px;
+}
+
+.autocomplete-wrap {
+  position: relative;
+  height: 100%;
+}
+
+.autocomplete-list {
+  position: absolute;
+  background: #fff;
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.05);
+  border-radius: 5px;
+  width: 100%;
+  padding: 10px 0;
+  z-index: 101;
+  margin-top: 50px;
+  max-height: calc(50vh - 150px);
+  overflow-y: auto;
+
+  &__group {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+  }
+
+  &__items {
+    padding: 0;
+    margin: 0;
+
+    & > li {
+      list-style: none;
+      padding: 8px 20px;
+      font-size: 0.925em;
+      cursor: pointer;
+
+      &:hover {
+        background: $black;
+        color: $white;
+      }
+    }
+
+    & > li.no-hover-list-item {
+      cursor: auto;
+      font-weight: 900;
+
+      &:hover {
+        background: inherit;
+        color: inherit;
+      }
+    }
+  }
+
+  &__group-name {
+    font-size: 0.825em;
+    padding: 3px 20px;
+    font-weight: 900;
+  }
+}
+
+.no-hover-list-item {
+  cursor: auto;
+  font-weight: 900;
+
+  &:hover {
+    background: inherit;
+    color: inherit;
+  }
+}
+
+.mb-pb-0 {
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+@media #{$mq-mobile-landscape} {
+  .autocomplete-list {
+    max-height: 70vh;
+  }
+}

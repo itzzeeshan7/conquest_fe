@@ -1,0 +1,74 @@
+<div class="row d-flex full-h user-info">
+  <div class="d-none d-lg-block col-lg-5 mt-1">
+    <div>
+      <ul>
+        <li>
+          <h5 (click)="toggleApartments()">Liked Apartments</h5>
+          <div *ngIf="apartments">
+            <ul class="list-unstyled" *ngFor="let place of apartment_groups">
+              <li>{{ place.place_name }}</li>
+              <li>
+                <ul>
+                  <li *ngFor="let item of place.items">
+                    <a [routerLink]="" (click)="goToApartmentPage(item)">{{ item.address_with_unit }}</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </li>
+        <li>
+          <h5 (click)="toggleBuildings()">Liked Buildings</h5>
+          <div *ngIf="buildings">
+            <ul class="list-unstyled" *ngFor="let place of building_groups">
+              <li>
+                <ul>
+                  <li *ngFor="let item of place.items">
+                    <a [routerLink]="" (click)="goToBuilding(item)">{{
+                      item.building_name ? item.building_name : item.address
+                    }}</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-xs-12 col-lg-7 mt-2">
+    <section class="search-sort">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <p class="search-sort-text d-inline-block">{{ items.length }} results | Sort By:</p>
+            <div ngbDropdown placement="bottom-left" class="d-inline-block">
+              <button class="btn sort-btn" id="dropdownBasic2" ngbDropdownToggle>{{ sortBy }}</button>
+              <div ngbDropdownMenu aria-labelledby="dropdownBasic2">
+                <button (click)="sortListBy('Time Added Last')" *ngIf="sortBy !== 'Time Added Last'" ngbDropdownItem>
+                  Time Added Last
+                </button>
+                <button (click)="sortListBy('Time Added First')" *ngIf="sortBy !== 'Time Added First'" ngbDropdownItem>
+                  Time Added First
+                </button>
+                <button (click)="sortListBy('Price lowest')" *ngIf="sortBy !== 'Price lowest'" ngbDropdownItem>
+                  Price lowest
+                </button>
+                <button (click)="sortListBy('Price highest')" *ngIf="sortBy !== 'Price highest'" ngbDropdownItem>
+                  Price highest
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <div class="row properties-rows">
+      <div class="col-xs-12 col-lg-4" *ngFor="let item of items">
+        <app-property-item [item]="item" (click)="goToApartmentPage(item)"></app-property-item>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

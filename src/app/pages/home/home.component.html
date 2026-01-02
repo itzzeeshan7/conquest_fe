@@ -1,0 +1,197 @@
+<section class="home-section" #width>
+  <app-header [isDarkMode]="true" class="w-100"></app-header>
+  <div class="container my-auto">
+    <div class="row">
+      <div class="col-12">
+        <h1 class="home-section__title text-center text-capitalize">DISCOVER WHAT MOVES YOU<sup>&reg;</sup></h1>
+      </div>
+    </div>
+    <div class="row justify-content-center">
+      <div class="col-xs-12 col-md-8 col-lg-6">
+        <ul class="home-section-type-switcher">
+          <li class="active" (click)="switchPropertyType(RESIDENTAL)">RESIDENTAL</li>
+          <li (click)="switchPropertyType(COMMERCIAL)">COMMERCIAL</li>
+          <li (click)="switchPropertyType(PRIVATE)">PRIVATE EQUITY</li>
+        </ul>
+        <div class="home-section__search">
+          <app-autocomplete
+            [query]="autosugestionString"
+            [searchType]="searchType"
+            (handleSelect)="selectSearchItem($event)"
+          >
+            <input
+              type="text"
+              [(ngModel)]="autosugestionModel"
+              class="search-field"
+              placeholder="City, Neighborhood, Address, ZIP"
+              #autosugestion
+            />
+          </app-autocomplete>
+          <div class="home-section__search__type" (searchTypeEmiter)="($event)" (click)="switchSearchType()">
+            <app-icon icon="play" class="d-inline-block"></app-icon>
+            {{ searchTypeText }}
+          </div>
+          <button class="btn btn-default">
+            <app-icon icon="search"></app-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-lg-6">
+        <div class="about-section-b">
+          <p>
+            Conquest Advisors LTD is a privately owned real estate advisor primarily focused on brokerage, development
+            and private equity. It provides its services to Individuals, Family Offices, Developers, Owners, and
+            Opportunity Funds.
+          </p>
+          <p>
+            The firm’s brokerage activities have spanned both commercial and residential transactions including new
+            development, building conversions, hotel and office buildings, apartment purchases, and commercial leasing.
+            The firm has participated in a number of development activities including multi-family buildings and
+            apartment renovations.
+          </p>
+          <p>
+            The firm also provides private equity services. These services range from sourcing LP capital, for Sponsors
+            to advisory engagements targeting opportunistic and value added investments. The firm’s members have been
+            associated with REBNY, CREFC and ULI. The firms deals have been featured in major news outlets including the
+            Wall Street Journal, NY Times, NY Post.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="residential-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-xs-12 col-lg-6">
+        <img src="./assets/img/home-img-1.jpg" class="about-section-img" alt="" />
+      </div>
+      <div class="col-xs-12 col-lg-6" #RESIDENTAL>
+        <div class="about-section-b">
+          <h2>RESIDENTAL</h2>
+          <p>
+            Conquest specializes in luxury residential transactions 5M+. Our firm is a member of the Real Estate Board
+            of New York providing access and distribution to the largest Multiple Listing Service.
+            <br />
+          </p>
+          <a [routerLink]="'/residental'" class="btn btn-outline">See more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="commercial-section">
+  <div class="container">
+    <div class="row" #COMMERCIAL>
+      <div class="col-xs-12 col-lg-6 d-none d-md-block d-lg-block">
+        <div class="about-section-b">
+          <h2>COMMERCIAL</h2>
+          <p>
+            Conquest works with investors to devise a bespoke strategy for real estate diversification within an
+            investors balance sheet. Conquest first understands the needs of the client’s goal ranging from equity
+            placement, deal size, leverage, desired risk, return thresholds and intended hold periods.
+          </p>
+          <a [routerLink]="'/commercial'" class="btn btn-outline">See more</a>
+        </div>
+      </div>
+      <div class="col-xs-12 col-lg-6">
+        <img src="./assets/img/home-img-2.png" class="about-section-img" alt="" />
+      </div>
+      <div class="col-xs-12 col-lg-6 d-block d-lg-none">
+        <div class="about-section-b">
+          <h2>COMMERCIAL</h2>
+          <p>
+            Conquest works with investors to devise a bespoke strategy for real estate diversification within an
+            investors balance sheet. Conquest first understands the needs of the client’s goal ranging from equity
+            placement, deal size, leverage, desired risk, return thresholds and intended hold periods. <br />
+          </p>
+          <a [routerLink]="'/private-equity'" class="btn btn-outline">See more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="private-equity-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-lg-6">
+        <img src="./assets/img/home-img-3.jpg" class="about-section-img" alt="" />
+      </div>
+      <div class="col-xs-12 col-lg-6" #PRIVATE>
+        <div class="about-section-b">
+          <h2>PRIVATE<br />EQUITY</h2>
+          <p>
+            Conquest serves as an investment vehicle to <br />
+            under write projects and offer development <br />
+            expertise.
+          </p>
+          <a [routerLink]="'/private-equity'" class="btn btn-outline">See more</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="news-section cq-section">
+  <ngb-carousel
+    #carousel
+    [interval]="5000"
+    [pauseOnHover]="pauseOnHover"
+    [showNavigationArrows]="false"
+    [showNavigationIndicators]="true"
+  >
+    <ng-template ngbSlide *ngFor="let chunk of chunkNews">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-lg-4 col-xl-3" *ngFor="let news of chunk">
+            <app-news-item [image]="news.picture" [title]="news.title" [description]="news.text.substring(0, 200)">
+            </app-news-item>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </ngb-carousel>
+</section>
+
+<section class="press-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <h6>WE HAVE BEEN FEATURED IN:</h6>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="press-list d-flex">
+          <div class="press-item">
+            <img src="./assets/img/company_1.png" alt="" />
+          </div>
+          <div class="press-item">
+            <img src="./assets/img/company_2.png" alt="" />
+          </div>
+          <div class="press-item">
+            <img src="./assets/img/company_3.png" alt="" />
+          </div>
+          <div class="press-item">
+            <img src="./assets/img/company_4.png" alt="" />
+          </div>
+          <div class="press-item">
+            <img src="./assets/img/company_5.png" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<app-footer></app-footer>

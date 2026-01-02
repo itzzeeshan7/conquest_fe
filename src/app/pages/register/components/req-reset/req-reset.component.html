@@ -1,0 +1,30 @@
+<div class="container">
+  <div class="card-body">
+    <h4 class="card-title text-center">
+      <i class="far fa-3x fa-user-circle text-muted"></i>
+    </h4>
+    <form (ngSubmit)="reset()" [formGroup]="resetForm" novalidate>
+      <div class="alert alert-danger" *ngIf="error" translate>{{ error?.message?.join(',') }}</div>
+      <div class="alert alert-success" *ngIf="isSuccess">
+        Success we sent a link to your email, redirect to home page for {{ time }} sec
+      </div>
+      <div class="form-group">
+        <label class="d-block">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="email"
+            autocomplete="email"
+            [placeholder]="'Email' | translate"
+          />
+          <span hidden translate>Email</span>
+          <app-error-message [control]="resetForm.get('email')"></app-error-message>
+        </label>
+      </div>
+      <button class="btn btn-primary w-100" type="submit" [disabled]="resetForm.invalid || isLoading">
+        <i class="fas fa-cog fa-spin" [hidden]="!isLoading"></i>
+        <span translate>Reset</span>
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,101 @@
+<div class="agent-b">
+  <div class="agent-contact-b">
+    <div class="agent-contact-b__top d-flex align-items-center">
+      <div class="agent-contact-b__avatar">
+        <img src="./assets/img/agent.jpg" alt="" />
+      </div>
+      <div class="agent-contact-b__head">
+        <div class="agent-contact-b__title">
+          Go See Similar Homes <br />
+          <span>with a New York City Agent</span>
+        </div>
+        <img class="agent-contact-b__stars" src="./assets/img/agent-stars.png" alt="" />
+      </div>
+    </div>
+    <div class="agent-contact-b__form">
+      <form (ngSubmit)="sendMessage()" [formGroup]="contactAgentForm" novalidate>
+        <div class="agent-contact-b__item">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="name"
+            [placeholder]="'Full Name' | translate"
+            [readonly]="isAuthenticate"
+          />
+        </div>
+        <div class="agent-contact-b__item">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="email"
+            [placeholder]="'Email' | translate"
+            [readonly]="isAuthenticate"
+          />
+        </div>
+        <div class="agent-contact-b__item">
+          <input
+            class="form-control"
+            formControlName="phone"
+            name="phone"
+            type="text"
+            autocomplete="doNotAutoComplete"
+            [placeholder]="'Phone' | translate"
+          />
+        </div>
+        <div class="agent-contact-b__item">
+          <textarea [class.filled]="contactAgentForm.get('message').value.length" formControlName="message"></textarea>
+          <label>Message</label>
+        </div>
+        <div *ngIf="!messageSent">
+          <button
+            class="btn btn-primary btn-block btn-sm"
+            *ngIf="showSend && showSendButton"
+            type="submit"
+            [disabled]="contactAgentForm.invalid"
+          >
+            Contact Agent
+          </button>
+        </div>
+      </form>
+    </div>
+    <div *ngIf="!messageSent">
+      <div class="form-check" (click)="notRobot()" *ngIf="!showSend">
+        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault" />
+        <label class="form-check-label" for="flexCheckDefault"> I'm not a robot! </label>
+      </div>
+    </div>
+    <div *ngIf="messageSent">
+      <div class="successful-label">Thank you for your message! We shall contact you soon.</div>
+    </div>
+  </div>
+  <div class="agent-b__buttons">
+    <div *ngIf="showImages">
+      <button class="btn btn-square" *ngIf="showImages.length > 0" (click)="openAllPhotos()">
+        <span class="d-block">{{ showImages.length }}</span>
+        Photos
+      </button>
+    </div>
+    <!-- <button class="btn btn-square">
+      <app-icon icon="map"></app-icon>
+      Map
+    </button> -->
+    <button class="btn btn-square" (click)="save($event)">
+      <app-icon [ngStyle]="{ color: saved_data ? 'red' : 'white' }" icon="heart"></app-icon>
+      Like
+    </button>
+    <button class="btn btn-square" (click)="openShareButtons()">
+      <app-icon icon="share"></app-icon>
+      Share
+    </button>
+    <div class="shared-container" *ngIf="showSharedButtons">
+      <div class="share-buttons-group">
+        <button shareButton="whatsapp" [url]="url" class="btn btn-sm">WhatsApp</button>
+        <button shareButton="facebook" [url]="url" class="btn btn-sm">Facebook</button>
+        <button shareButton="twitter" [url]="url" class="btn btn-sm">Twitter</button>
+        <button shareButton="linkedin" [url]="url" class="btn btn-sm">LinkedIn</button>
+        <button shareButton="email" [url]="url" class="btn btn-sm">Email</button>
+        <button shareButton="copy" [url]="url" class="btn btn-sm">Copy</button>
+      </div>
+    </div>
+  </div>
+</div>

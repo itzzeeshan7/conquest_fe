@@ -1,0 +1,499 @@
+<div class="container">
+  <div class="col-xs-12 col-lg-8">
+    <div class="search-form-wrap">
+      <app-icon icon="quick-search"></app-icon>
+      <app-autocomplete
+        [query]="autosugestionString"
+        [searchType]="searchType"
+        (handleSelect)="selectSearchItem($event)"
+      >
+        <input
+          type="text"
+          class="form-control form-control-lg search-form"
+          placeholder="City, Neighborhood, Address, ZIP"
+          [(ngModel)]="autosugestionModel"
+          #autosugestion
+        />
+      </app-autocomplete>
+      <button class="btn btn-icon" (click)="clearQuery()">
+        <app-icon icon="cross"></app-icon>
+      </button>
+    </div>
+  </div>
+</div>
+
+<app-breadcrumbs [navigation]="breadcrumbs"></app-breadcrumbs>
+<div class="slider-wrap">
+  <app-slider [images]="images" *ngIf="showImages"></app-slider>
+  <div class="map-container" [hidden]="showImages">
+    <google-map
+      #AgmMap
+      [options]="{ styles: mapStyles, scrollwheel: false }"
+      [center]="{ lat: lat, lng: lng }"
+      [zoom]="18"
+      width="100%"
+      height="100%"
+    >
+      <map-marker [position]="{ lat: lat, lng: lng }" [options]="{ icon: markerIcon }"> </map-marker>
+    </google-map>
+    <!-- <div id="streetview-container" [hidden]="!showStreetView">
+      <div id="streetview-map" #streetviewMap></div>
+      <div id="streetview-pano" #streetviewPano></div>
+    </div> -->
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-lg-7 offset-lg-1">
+      <div class="page-top-wrap">
+        <div class="d-md-flex d-lg-flex d-xl-flex align-items-center justify-content-between">
+          <div class="page-title-b">
+            <h1 class="page-title-b__name">
+              {{ !!buildingDetails.building_name ? buildingDetails.building_name : buildingDetails.address }}
+            </h1>
+            <!-- <h4 class="page-title-b__cross-str">BETWEEN GRAND ST AND BROOME ST.</h4> -->
+            <h4 class="page-title-b__cross-str">
+              {{ buildingDetails.place_name ? buildingDetails.place_name : buildingDetails.address }}
+            </h4>
+            <!-- <h6 class="page-title-b__disrtict">{{ buildingDetails.place_name }}</h6> -->
+          </div>
+          <div class="page-btns">
+            <!-- <button class="btn btn-gray" (click)="streetView('street')">
+              <app-icon icon="street-view"></app-icon>Street View
+            </button> -->
+            <button
+              class="btn btn-gray"
+              [class.btn-outline-gray]="!showImages"
+              (click)="imagesView()"
+              *ngIf="images?.length > 0"
+            >
+              <app-icon icon="map"></app-icon>Building View
+            </button>
+            <button class="btn btn-gray" [class.btn-outline-gray]="showImages" (click)="streetView('map')">
+              <app-icon icon="map"></app-icon>&nbsp;Map View
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-facts-wrap">
+        <app-facts [facts]="facts"></app-facts>
+      </div>
+
+      <div class="general-facts">
+        <div class="general-facts__top" *ngIf="isAuthenticate">
+          <div class="general-facts__item" *ngIf="buildingDetails.building_elevator">
+            Access: {{ buildingDetails.building_elevator ? 'Elevator' : 'Stairs' }}
+          </div>
+          <div class="general-facts__item" *ngIf="buildingDetails.listing_service">
+            Service Level: {{ buildingDetails.listing_service ? 'High' : 'Minimal' }}
+          </div>
+          <div class="general-facts__item">
+            Pet Policy: {{ buildingDetails.building_pets ? 'Allowed' : 'Not Allowed' }}
+          </div>
+        </div>
+        <div class="general-facts__bottom">
+          {{ description }}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4">
+      <app-agent-contact [buildingData]="buildingDetails" [images]="images"></app-agent-contact>
+    </div>
+  </div>
+
+  <!-- Property: History -->
+  <div
+    class="property-history-wrap"
+    *ngIf="
+      !onlyForLoggedUsers &&
+      (totalActiveSales.length > 0 ||
+        totalActiveRentals.length > 0 ||
+        totalPastSales.length > 0 ||
+        totalPastRentals.length > 0)
+    "
+  >
+    <div class="row">
+      <div class="col-12">
+        <div class="page-title">Property History</div>
+        <nav ngbNav #nav1="ngbNav" class="nav-tabs" [destroyOnHide]="false">
+          <ng-container *ngIf="totalActiveSales.length > 0" ngbNavItem>
+            <a ngbNavLink>Active Sales ({{ totalActiveSales.length }})</a>
+            <ng-template ngbNavContent>
+              <br />
+              <!-- <div class="page-title">
+                Sales <span *ngIf="!onlyForLoggedUsers">({{ totalActiveSales.length }})</span>
+              </div> -->
+              <app-building-history
+                [items]="totalActiveSales"
+                [searchType]="searchType"
+                [avgPrice]="averagePrice(totalActiveSales, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalActiveSales, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="active"
+              >
+              </app-building-history>
+              <!-- <br />
+              <div class="page-title" *ngIf="totalActiveRentals.length > 0">
+                Rentals({{ totalActiveRentals.length }})
+              </div>
+              <app-building-history
+                *ngIf="totalActiveRentals.length > 0"
+                [items]="totalActiveRentals"
+                [avgPrice]="averagePrice(totalActiveRentals, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalActiveRentals, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="active"
+              >
+              </app-building-history> -->
+            </ng-template>
+            <!-- <ng-template ngbTabContent #noActiveListings>
+              <br />
+              <div *ngIf="totalActiveRentalsOnlyForLoggedUsers">
+                <div>Please login to see all listings!</div>
+              </div>
+              <div *ngIf="!totalActiveRentalsOnlyForLoggedUsers">
+                <div>No active listings in building</div>
+              </div>
+            </ng-template> -->
+          </ng-container>
+          <ng-container *ngIf="totalActiveRentals.length > 0" ngbNavItem>
+            <a ngbNavLink>Active Rentals ({{ totalActiveRentals.length }})</a>
+            <ng-template ngbNavContent>
+              <!-- <br />
+              <div class="page-title">
+                Sales <span *ngIf="!onlyForLoggedUsers">({{ totalActiveSales.length }})</span>
+              </div>
+              <app-building-history
+                [items]="totalActiveSales"
+                [searchType]="searchType"
+                [avgPrice]="averagePrice(totalActiveSales, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalActiveSales, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="active"
+              >
+              </app-building-history>
+              <br />
+              <div class="page-title" *ngIf="totalActiveRentals.length > 0">
+                Rentals({{ totalActiveRentals.length }})
+              </div> -->
+              <app-building-history
+                *ngIf="totalActiveRentals.length > 0"
+                [items]="totalActiveRentals"
+                [avgPrice]="averagePrice(totalActiveRentals, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalActiveRentals, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="active"
+              >
+              </app-building-history>
+            </ng-template>
+            <!-- <ng-template ngbTabContent #noActiveListings>
+              <br />
+              <div *ngIf="totalActiveRentalsOnlyForLoggedUsers">
+                <div>Please login to see all listings!</div>
+              </div>
+              <div *ngIf="!totalActiveRentalsOnlyForLoggedUsers">
+                <div>No active listings in building</div>
+              </div>
+            </ng-template> -->
+          </ng-container>
+          <ng-container *ngIf="totalPastSales.length > 0" ngbNavItem>
+            <a ngbNavLink
+              >Past Sales <span *ngIf="!onlyForLoggedUsers">({{ totalPastSales.length }})</span></a
+            >
+            <ng-template ngbNavContent>
+              <br />
+              <app-building-history
+                [items]="totalPastSales"
+                [avgPrice]="averagePrice(totalPastSales, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalPastSales, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="past sales"
+              >
+              </app-building-history>
+            </ng-template>
+            <!-- <ng-template #noPastSales>
+              <br />
+              <div *ngIf="totalPastSalesOnlyForLoggedUsers">
+                <div>Please login to see all listings!</div>
+              </div>
+              <div *ngIf="!totalPastSalesOnlyForLoggedUsers">
+                <div>No active listings in building</div>
+              </div>
+            </ng-template> -->
+          </ng-container>
+          <ng-container *ngIf="totalPastRentals.length > 0" ngbNavItem>
+            <a ngbNavLink
+              >Past Rentals <span *ngIf="!onlyForLoggedUsers">({{ totalPastRentals.length }})</span></a
+            >
+            <ng-template ngbNavContent>
+              <br />
+              <app-building-history
+                [items]="totalPastRentals"
+                [avgPrice]="averagePrice(totalPastRentals, 'listing_price')"
+                [avgSqftPrice]="averagePrice(totalPastRentals, 'listing_price_per_sqft')"
+                [onlyForLoggedUsers]="onlyForLoggedUsers"
+                listingType="past rentals"
+              ></app-building-history>
+            </ng-template>
+            <!-- <ng-template #noPastRentals>
+              <br />
+              asdasd
+              <div *ngIf="totalPastRentalsOnlyForLoggedUsers">
+                <div>Please login to see all listings!</div>
+              </div>
+              <div *ngIf="!totalPastRentalsOnlyForLoggedUsers">
+                <div>No active listings in building</div>
+              </div>
+            </ng-template> -->
+          </ng-container>
+        </nav>
+        <div [ngbNavOutlet]="nav1"></div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="property-history-wrap d-block d-sm-block d-md-none d-lg-none d-xl-none">
+    <div class="page-title">
+      Property History
+    </div>
+    <nav ngbNav #nav2="ngbNav" class="nav-tabs" [destroyOnHide]="false">
+      <ng-container *ngIf="totalActiveSales.length > 0 || totalActiveRentals.length > 0" ngbNavItem>
+        <a ngbNavLink>Active Listings</a>
+        <ng-template ngbNavContent>
+          <br />
+          <div class="page-title" *ngIf="totalActiveSales.length > 0">Sales({{ totalActiveSales.length }})</div>
+          <app-building-history *ngIf="totalActiveSales.length" [items]="totalActiveSales" [searchType]="searchType"
+            [avgPrice]="averagePrice(totalActiveSales, 'listing_price')"
+            [avgSqftPrice]="averagePrice(totalActiveSales, 'listing_price_per_sqft')">
+          </app-building-history>
+          <br />
+          <div class="page-title" *ngIf="totalActiveRentals.length > 0">Rentals({{ totalActiveRentals.length }})</div>
+          <app-building-history *ngIf="totalActiveRentals.length > 0" [items]="totalActiveRentals"
+            [avgPrice]="averagePrice(totalActiveRentals, 'listing_price')"
+            [avgSqftPrice]="averagePrice(totalActiveRentals, 'listing_price_per_sqft')">
+          </app-building-history>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="totalPastSales.length > 0" ngbNavItem>
+        <a ngbNavLink>Past Sales ({{ totalPastSales.length }})</a>
+        <ng-template ngbNavContent>
+          <br />
+          <app-building-history [items]="totalPastSales" [avgPrice]="averagePrice(totalPastSales, 'listing_price')"
+            [avgSqftPrice]="averagePrice(totalPastSales, 'listing_price_per_sqft')">
+          </app-building-history>
+        </ng-template>
+      </ng-container>
+      <ng-container *ngIf="totalPastRentals.length > 0" ngbNavItem>
+        <a ngbNavLink>Past Rentals ({{ totalPastRentals.length }})</a>
+        <ng-template ngbNavContent>
+          <br />
+          <app-building-history [items]="totalPastRentals" [avgPrice]="averagePrice(totalPastRentals, 'listing_price')"
+            [avgSqftPrice]="averagePrice(totalPastRentals, 'listing_price_per_sqft')"></app-building-history>
+        </ng-template>
+      </ng-container>
+    </nav>
+    <div [ngbNavOutlet]="nav2"></div>
+  </div> -->
+  <!-- /Property: History -->
+
+  <!-- Property: Building Amenities -->
+  <div class="building-amenities-wrap">
+    <div class="">
+      <div class="container-width">
+        <div class="page-title">Building Amenities</div>
+        <app-amenities [newList]="newAmenities"></app-amenities>
+      </div>
+    </div>
+  </div>
+  <!-- /Property: Building Amenities -->
+
+  <!-- Property: Building facts -->
+  <div class="building-facts-wrap">
+    <div class="">
+      <div class="container-width">
+        <div class="page-title">Building Details</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap">
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.building_name">
+            Building name: <strong>{{ buildingDetails.building_name }}</strong>
+          </li>
+          <!-- <li class="col-3">Tax Abatement: <strong>-</strong></li>
+          <li class="col-3">Tax Abatement Expires: <strong>-</strong></li> -->
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.num_stories">
+            Floors: <strong>{{ buildingDetails.num_stories }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.total_number_of_units">
+            Units: <strong>{{ buildingDetails.total_number_of_units }}</strong>
+          </li>
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.total_number_of_units">
+            Lot Size: <strong>{{ util.convertToLocaleString(buildingDetails.lot_size) }}</strong>
+          </li>
+          <!-- <li class="col-3">Owner Names: <strong>-</strong></li> -->
+          <!-- <li class="col-3">Coop Rules: <strong>-</strong></li> -->
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.property_type">
+            Building Type: <strong>{{ buildingDetails.property_type }}</strong>
+          </li>
+          <!-- <li class="col-xl-4 col-lg-3 col-12" *ngIf="isAuthenticate">
+            Pet Policy: <strong>{{ buildingDetails.building_pets ? 'Allowed' : 'Not Allowed' }}</strong>
+          </li> -->
+          <!-- <li class="col-3">Access: <strong>Elevators (3)</strong></li>
+          <li class="col-3">Service Level: <strong>Concierge</strong></li> -->
+          <li class="col-xl-4 col-lg-3 col-12" *ngIf="buildingDetails.building_class">
+            Building Class: <strong>{{ buildingDetails.building_class }}</strong>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Property: Building facts -->
+
+  <!-- Property: Lot & Zoning -->
+  <!-- <div class="building-facts-wrap">
+    <div class="row">
+      <div class="col-10 offset-1">
+        <div class="page-title">Lot and Zoning</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap">
+          <li class="col-3">Zone District 1: <strong>M1-5B</strong></li>
+          <li class="col-6">Split Zone: <strong>No</strong></li>
+          <li class="col-3">Land Use: <strong>RM</strong></li>
+          <li class="col-6">Esaments: <strong>-</strong></li>
+          <li class="col-3">Lot Width: <strong>106.92 Ft.</strong></li>
+          <li class="col-6">Lot Depth: <strong>200 Ft.</strong></li>
+          <li class="col-3">Lot Area: <strong>21,370 Sq.FT</strong></li>
+          <li class="col-6">BBL: <strong>1,-00474-7506</strong></li>
+        </ul>
+      </div>
+    </div>
+  </div> -->
+  <!-- /Property: Lot & Zoning -->
+
+  <!-- Property: Districts -->
+  <div class="building-facts-wrap" *ngIf="getNearestSchool()">
+    <div class="">
+      <div class="container-width">
+        <div class="page-title">Districts</div>
+        <ul class="row d-flex ui-list ui-list-three-column wrap">
+          <!-- <li class="col-3">City Council: <strong>1</strong></li> -->
+          <!-- <li class="col-6">Fire Department: <strong>E055</strong></li> -->
+          <li class="col-3" *ngIf="nearSchools.length > 0">
+            School: <strong>{{ getNearestSchool() }} </strong>
+          </li>
+          <!-- <li class="col-6">Historic: <strong>SoHo-Cast Iron</strong></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <!-- /Property: Districts -->
+
+  <!-- Property: Description -->
+  <!-- <div class="building-description-wrap">
+    <div class="row">
+      <div class="col-10 offset-1">
+        <article>
+          {{ buildingDetails.marketing_description }}
+        </article>
+      </div>
+    </div>
+  </div> -->
+  <!-- /Property: Description -->
+
+  <!-- Property: Maps -->
+  <ng-container *ngIf="!!nearSchools?.length || !!subwayStations?.length">
+    <div class="building-maps-wrap">
+      <div class="">
+        <div class="container-width">
+          <div class="page-title">Map</div>
+          <nav ngbNav #nav3="ngbNav" class="nav-tabs" [destroyOnHide]="true">
+            <ng-container *ngIf="nearSchools.length > 0" ngbNavItem>
+              <a ngbNavLink>Schools</a>
+              <ng-template ngbNavContent>
+                <br />
+                <app-maps
+                  [places]="nearSchools"
+                  [location]="{ latitude: lat, longitude: lng }"
+                  [markerType]="markerTypeEnum.marker"
+                ></app-maps>
+              </ng-template>
+            </ng-container>
+            <!-- <ng-container *ngIf="cityBike.length > 0" ngbNavItem>
+              <a ngbNavLink>City Bike</a>
+              <ng-template ngbNavContent>
+                <br />
+                <app-maps
+                  [places]="cityBike"
+                  [location]="{ latitude: lat, longitude: lng }"
+                  [markerType]="markerTypeEnum.marker"
+                ></app-maps>
+              </ng-template>
+            </ng-container> -->
+            <ng-container *ngIf="subwayStations?.length > 0" ngbNavItem>
+              <a ngbNavLink>Transportation</a>
+              <ng-template ngbNavContent>
+                <br />
+                <app-maps
+                  [places]="subwayStations"
+                  [location]="{ latitude: lat, longitude: lng }"
+                  [markerType]="markerTypeEnum.marker"
+                ></app-maps>
+              </ng-template>
+            </ng-container>
+          </nav>
+          <div [ngbNavOutlet]="nav3"></div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- /Property: Maps -->
+
+  <!-- Property: Point Of Interest -->
+  <!-- <div class="building-poi-wrap">
+    <div class="row">
+      <div class="col-10 offset-1">
+        <div class="page-title">Point Of Interests</div>
+        <div>Here should be point of interests widget.</div>
+      </div>
+    </div>
+  </div> -->
+  <!-- /Property: Point Of Interest -->
+
+  <!-- Property: Schedule viewing -->
+  <!-- <div
+    class="building-poi-wrap"
+    *ngIf="isAuthenticate && (totalActiveSales.length > 0 || totalActiveRentals.length > 0)"
+  >
+    <div class="">
+      <div class="container-width">
+        <app-schedule-viewing
+          img="{{ images[images.length - 1] }}"
+          [data]="buildingDetails"
+          info="{{ buildingDetails.building_name ? buildingDetails.building_name : buildingDetails.address }}"
+        >
+        </app-schedule-viewing>
+      </div>
+    </div>
+  </div> -->
+  <!-- /Property: Schedule viewing -->
+
+  <!-- Property: Similar buildings -->
+  <div class="building-poi-wrap">
+    <div class="page-title">Similar Buildings</div>
+    <div class="building-list">
+      <div *ngFor="let buildingData of similarBuildings">
+        <app-building-card (click)="navigateToBuilding(buildingData)" [building]="buildingData"></app-building-card>
+      </div>
+    </div>
+  </div>
+  <!-- /Property: Similar buildings -->
+  <div>
+    <p>
+      This information is not verified for authenticity or accuracy and is not guaranteed and may not reflect all real
+      estate activity in the market. ©2023 The Real Estate Board of New York, Inc., All rights reserved. The source of
+      the displayed data is either the property owner or public record provided by non-governmental third parties. It is
+      believed to be reliable but not guaranteed. This information is provided exclusively for consumers' personal,
+      non-commercial use. Information Copyright 2023, REBNY MLS. All data is deemed reliable but is not guaranteed
+      accurate by Conquest. See <a [routerLink]="'/terms-of-service'">Terms of Service</a> for additional restrictions.
+      Conquest · Phone:<a href="tel:+1-212-777-9690"> (212) 777-9690 </a> · New York, NY
+    </p>
+  </div>
+</div>
+
+<app-footer></app-footer>

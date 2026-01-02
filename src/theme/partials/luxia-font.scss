@@ -1,0 +1,29 @@
+$fonts-dir: "~assets/fonts";
+
+@font-face {
+  font-family: "Luxia";
+  src: url("#{$fonts-dir}/luxia/Luxia-Regular.eot");
+  src:
+    url("#{$fonts-dir}/luxia/Luxia-Regular.eot?#iefix") format("embedded-opentype"),
+    url("#{$fonts-dir}/luxia/Luxia-Regular.woff2") format("woff2"),
+    url("#{$fonts-dir}/luxia/Luxia-Regular.woff") format("woff"),
+    url("#{$fonts-dir}/luxia/Luxia-Regular.ttf") format("truetype"),
+    url("#{$fonts-dir}/luxia/Luxia-Regular.svg#Luxia-Regular") format("svg");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Luxia Display";
+  src: url("#{$fonts-dir}/luxia/Luxia-Display.eot");
+  src:
+    url("#{$fonts-dir}/luxia/Luxia-Display.eot?#iefix") format("embedded-opentype"),
+    url("#{$fonts-dir}/luxia/Luxia-Display.woff2") format("woff2"),
+    url("#{$fonts-dir}/luxia/Luxia-Display.woff") format("woff"),
+    url("#{$fonts-dir}/luxia/Luxia-Display.ttf") format("truetype"),
+    url("#{$fonts-dir}/luxia/Luxia-Display.svg#Luxia-Display") format("svg");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}

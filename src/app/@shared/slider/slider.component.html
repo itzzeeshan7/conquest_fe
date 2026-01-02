@@ -1,0 +1,30 @@
+<div #width class="slider-container container position-relative">
+  <div class="status" *ngIf="getWatermark()">
+    <img data-src="{{ watermarkImg }}" />
+  </div>
+  <swiper-container
+    class="slider"
+    [navigation]="true"
+    [centeredSlides]="true"
+    [slidesPerView]="1"
+    [loop]="true"
+    [speed]="600"
+    [initialSlide]="1"
+    [spaceBetween]="3"
+  >
+    <swiper-slide *ngFor="let image of images" (click)="openModal()">
+      <img data-src="{{ image }}" alt="" uiImageLoader [onErrorSrc]="defaultImg" />
+    </swiper-slide>
+  </swiper-container>
+  <button class="slider__arrow slider__arrow-prev"></button>
+  <button class="slider__arrow slider__arrow-next"></button>
+  <div class="slider__container position-absolute">
+    <div class="container">
+      <div class="row">
+        <div class="col-5 col-lg-7 col-xl-7 text-right">
+          <div class="slider__counter d-inline-block">{{ getCurrentSliderIndex() }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

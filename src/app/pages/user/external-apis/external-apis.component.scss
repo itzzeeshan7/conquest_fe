@@ -1,0 +1,36 @@
+@import "../../../../theme/theme-variables";
+
+.external-apis {
+  table {
+    .btn-icon {
+      border: 1px solid $blackRgb3;
+      color: $black;
+      padding: 0;
+      width: 30px;
+      height: 30px;
+      font-size: 12px;
+    }
+
+    .form-control:focus {
+      box-shadow: 0 0 0 0.2em $blackRgb3 !important;
+    }
+
+    .btn-outline-dark:not(:disabled):not(.disabled):active,
+    .btn-outline-dark:not(:disabled):not(.disabled).active,
+    .show > .btn-outline-dark.dropdown-toggle {
+      color: #fff;
+      background-color: $blackRgb3 !important;
+      border-color: $black !important;
+    }
+
+    .th {
+      button {
+        float: right;
+
+        &:focus {
+          box-shadow: 0 0 0 0.2em $blackRgb3;
+        }
+      }
+    }
+  }
+}
