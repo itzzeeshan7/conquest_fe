@@ -26,6 +26,9 @@
         <a (click)="toggleNav()" [routerLinkActive]="['active']" [routerLink]="['/user']">My Account</a>
       </li>
       <li *ngIf="isAuthenticate$ | async">
+        <a (click)="toggleNav()" [routerLinkActive]="['active']" [routerLink]="['/user']">My Profile</a>
+      </li>
+      <li *ngIf="isAuthenticate$ | async">
         <a (click)="openDialog(Links.Logout)">Sign Out</a>
       </li>
     </ul>
