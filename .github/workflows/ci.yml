@@ -60,6 +60,19 @@ jobs:
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         run: sudo apt-get install -y sshpass
 
+      - name: Create target directory
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            rm -rf /tmp/conquest_build
+            mkdir -p /tmp/conquest_build
+            echo "Target directory created"
+
       - name: Deploy to server
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         env:
@@ -68,10 +81,26 @@ jobs:
           SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
           SSH_PORT: ${{ secrets.SSH_PORT }}
         run: |
-          sshpass -p "$SSH_PASSWORD" rsync -avz --delete \
+          echo "Starting rsync to server..."
+          sshpass -p "$SSH_PASSWORD" rsync -avz --progress \
             -e "ssh -p $SSH_PORT -o StrictHostKeyChecking=no" \
             dist/ \
             $SSH_USER@$SSH_HOST:/tmp/conquest_build/
+          echo "Rsync completed"
+
+      - name: Verify upload
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          script: |
+            echo "Files in /tmp/conquest_build/:"
+            ls -la /tmp/conquest_build/ | head -10
+            echo "Checking serverUrl:"
+            grep -o "serverUrl[^,]*" /tmp/conquest_build/main*.js | head -1
 
       - name: Activate deployment
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
@@ -82,6 +111,9 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
+            echo "Moving files to nginx..."
             sudo rsync -av --delete /tmp/conquest_build/ /var/www/html/conquest/
             rm -rf /tmp/conquest_build
+            echo "Verifying deployment:"
+            grep -o "serverUrl[^,]*" /var/www/html/conquest/main*.js | head -1
             echo "Frontend deployment complete!"
