@@ -11,7 +11,7 @@ export const environment = {
   staging: false,
   hmr: false,
   version: env.npm_package_version,
-  serverUrl: '/api',
+  serverUrl: '',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
   sentryDsn: 'https://832c8cecea97174220ae89225b8fce60@o4510549056487424.ingest.us.sentry.io/4510549057798144',
