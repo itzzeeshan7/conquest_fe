@@ -31,6 +31,16 @@ jobs:
         run: |
           echo "export const env = { npm_package_version: '1.0.0' };" > src/environments/.env.ts
 
+      - name: Clear Angular cache
+        run: rm -rf .angular/cache
+
+      - name: Verify environment file
+        run: |
+          echo "=== environment.prod.ts ==="
+          cat src/environments/environment.prod.ts
+          echo "=== Checking serverUrl ==="
+          grep serverUrl src/environments/environment.prod.ts
+
       - name: Build application
         run: npx ng build --configuration production
 
@@ -40,6 +50,11 @@ jobs:
           ls -la dist/
           echo "=== Total files ==="
           find dist -type f | wc -l
+
+      - name: Verify serverUrl in build
+        run: |
+          echo "=== serverUrl in built files ==="
+          grep -o "serverUrl[^,]*" dist/main*.js | head -3
 
       - name: Install sshpass
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
