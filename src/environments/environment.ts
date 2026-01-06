@@ -16,6 +16,7 @@ export const environment = {
   hmr: true,
   version: env.npm_package_version + '-dev',
   serverUrl: 'http://localhost:3000',
+  // serverUrl: 'http://172.232.189.184:9000',
   defaultLanguage: 'en-US',
   supportedLanguages: ['en-US'],
   sentryDsn: 'https://832c8cecea97174220ae89225b8fce60@o4510549056487424.ingest.us.sentry.io/4510549057798144',
