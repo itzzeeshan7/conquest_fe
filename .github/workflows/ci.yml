@@ -112,7 +112,7 @@ jobs:
           port: ${{ secrets.SSH_PORT }}
           script: |
             echo "Moving files to nginx..."
-            sudo rsync -av --delete /tmp/conquest_build/ /var/www/html/conquest/
+            rsync -av --delete /tmp/conquest_build/ /var/www/html/conquest/
             rm -rf /tmp/conquest_build
             echo "Verifying deployment:"
             grep -o "serverUrl[^,]*" /var/www/html/conquest/main*.js | head -1
