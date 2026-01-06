@@ -10,8 +10,8 @@ env:
   NODE_VERSION: '20'
 
 jobs:
-  build:
-    name: Build
+  build-and-deploy:
+    name: Build and Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -34,14 +34,20 @@ jobs:
       - name: Build application
         run: npx ng build --configuration production
 
-  deploy:
-    name: Deploy to Production
-    runs-on: ubuntu-latest
-    needs: build
-    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+      - name: Deploy to server
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          password: ${{ secrets.SSH_PASSWORD }}
+          port: ${{ secrets.SSH_PORT }}
+          source: "dist/conquest_fe/browser/*"
+          target: "/tmp/conquest_build"
+          strip_components: 3
 
-    steps:
-      - name: Deploy to server via SSH
+      - name: Activate deployment
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.SSH_HOST }}
@@ -49,21 +55,6 @@ jobs:
           password: ${{ secrets.SSH_PASSWORD }}
           port: ${{ secrets.SSH_PORT }}
           script: |
-            cd /home/deploy/conquest_fe
-
-            echo "Pulling latest changes..."
-            git pull origin main
-
-            echo "Installing dependencies..."
-            npm ci --legacy-peer-deps --ignore-scripts
-
-            echo "Creating environment file..."
-            npm run env
-
-            echo "Building application..."
-            npx ng build --configuration production
-
-            echo "Copying to Nginx directory..."
-            sudo rsync -av --delete dist/conquest_fe/browser/ /var/www/html/conquest/
-
-            echo "Frontend deployment complete!"
+            sudo rsync -av --delete /tmp/conquest_build/ /var/www/html/conquest/
+            rm -rf /tmp/conquest_build
+            echo "Deployment complete!"
