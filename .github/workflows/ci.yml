@@ -37,7 +37,7 @@ jobs:
       - name: List build output
         run: |
           echo "=== Build output structure ==="
-          ls -la dist/conquest_fe/browser/
+          ls -la dist/
           echo "=== Total files ==="
           find dist -type f | wc -l
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           sshpass -p "$SSH_PASSWORD" rsync -avz --delete \
             -e "ssh -p $SSH_PORT -o StrictHostKeyChecking=no" \
-            dist/conquest_fe/browser/ \
+            dist/ \
             $SSH_USER@$SSH_HOST:/tmp/conquest_build/
 
       - name: Activate deployment
