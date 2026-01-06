@@ -36,22 +36,27 @@ jobs:
 
       - name: List build output
         run: |
-          echo "Build output:"
-          ls -la dist/
-          ls -la dist/conquest_fe/ || true
-          ls -la dist/conquest_fe/browser/ || true
+          echo "=== Build output structure ==="
+          ls -la dist/conquest_fe/browser/
+          echo "=== Total files ==="
+          find dist -type f | wc -l
+
+      - name: Install sshpass
+        if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+        run: sudo apt-get install -y sshpass
 
       - name: Deploy to server
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
-          source: "dist/conquest_fe/browser/"
-          target: "/tmp/conquest_build"
-          strip_components: 3
+        env:
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          SSH_PASSWORD: ${{ secrets.SSH_PASSWORD }}
+          SSH_PORT: ${{ secrets.SSH_PORT }}
+        run: |
+          sshpass -p "$SSH_PASSWORD" rsync -avz --delete \
+            -e "ssh -p $SSH_PORT -o StrictHostKeyChecking=no" \
+            dist/conquest_fe/browser/ \
+            $SSH_USER@$SSH_HOST:/tmp/conquest_build/
 
       - name: Activate deployment
         if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
@@ -64,4 +69,4 @@ jobs:
           script: |
             sudo rsync -av --delete /tmp/conquest_build/ /var/www/html/conquest/
             rm -rf /tmp/conquest_build
-            echo "Deployment complete!"
+            echo "Frontend deployment complete!"
